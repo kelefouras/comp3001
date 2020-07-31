@@ -1,3 +1,11 @@
+/*
+------------------DR VASILIOS KELEFOURAS-----------------------------------------------------
+------------------COMP3001 ------------------------------------------------------------------
+------------------PARALLEL PROGAMMING MODULE-------------------------------------------------
+------------------UNIVERSITY OF PLYMOUTH, SCHOOL OF ENGINEERING, COMPUTING AND MATHEMATICS---
+*/
+
+
 //This program is taken from http://openmp.org/mp-documents/Mattson_OMP_exercises.zip
 /*
 **  PROGRAM: Mandelbrot area (solution)

@@ -1,4 +1,9 @@
-
+/*
+------------------DR VASILIOS KELEFOURAS-----------------------------------------------------
+------------------COMP3001 ------------------------------------------------------------------
+------------------PARALLEL PROGAMMING MODULE-------------------------------------------------
+------------------UNIVERSITY OF PLYMOUTH, SCHOOL OF ENGINEERING, COMPUTING AND MATHEMATICS---
+*/
 
 #include <stdio.h>	/* for printf */
 #include <stdint.h>	/* for uint64 definition */

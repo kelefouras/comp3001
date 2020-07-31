@@ -1,3 +1,9 @@
+/*
+------------------DR VASILIOS KELEFOURAS-----------------------------------------------------
+------------------COMP3001 ------------------------------------------------------------------
+------------------PARALLEL PROGAMMING MODULE-------------------------------------------------
+------------------UNIVERSITY OF PLYMOUTH, SCHOOL OF ENGINEERING, COMPUTING AND MATHEMATICS---
+*/
 //omp simd is supported in VS2019 only
 
 #include <Windows.h>

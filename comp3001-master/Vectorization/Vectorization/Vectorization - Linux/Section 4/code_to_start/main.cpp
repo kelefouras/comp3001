@@ -1,3 +1,10 @@
+/*
+------------------DR VASILIOS KELEFOURAS-----------------------------------------------------
+------------------COMP3001 ------------------------------------------------------------------
+------------------PARALLEL PROGAMMING MODULE-------------------------------------------------
+------------------UNIVERSITY OF PLYMOUTH, SCHOOL OF ENGINEERING, COMPUTING AND MATHEMATICS---
+*/
+
 //gcc main.cpp MMM.cpp MVM.cpp if_cond.cpp -o p -O2 -march=native -mavx -lm -D_GNU_SOURCE 
 
 

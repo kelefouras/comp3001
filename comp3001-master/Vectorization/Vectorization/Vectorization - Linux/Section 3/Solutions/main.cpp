@@ -1,3 +1,10 @@
+/*
+------------------DR VASILIOS KELEFOURAS-----------------------------------------------------
+------------------COMP3001 ------------------------------------------------------------------
+------------------PARALLEL PROGAMMING MODULE-------------------------------------------------
+------------------UNIVERSITY OF PLYMOUTH, SCHOOL OF ENGINEERING, COMPUTING AND MATHEMATICS---
+*/
+
 //THE FOLLOWING GCC OPTIONS CAN BE DEFINED FROM HERE INSTEAD OF TYPING THEM WHEN COMPILING
 /*
 #pragma GCC optimize("O3","unroll-loops","omit-frame-pointer","inline") //Optimization flags

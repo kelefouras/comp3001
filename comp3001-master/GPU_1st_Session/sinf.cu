@@ -1,3 +1,10 @@
+/*
+------------------DR VASILIOS KELEFOURAS-----------------------------------------------------
+------------------COMP3001 ------------------------------------------------------------------
+------------------PARALLEL PROGAMMING MODULE-------------------------------------------------
+------------------UNIVERSITY OF PLYMOUTH, SCHOOL OF ENGINEERING, COMPUTING AND MATHEMATICS---
+*/
+
 
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
@@ -19,7 +26,7 @@ int main(){
 
     float* input, * output;
     float* d_input, * d_output;
-    clock_t start, end;
+
     cudaError_t cudaStatus;
 
     input = (float*)malloc(N * sizeof(float)); //dynamically allocate CPU memory using malloc
@@ -52,7 +59,7 @@ int main(){
         return -1;
     }
 
-    start = clock();
+  
 
     cudaStatus=cudaMemcpy(d_input, input, N * sizeof(float), cudaMemcpyHostToDevice);
     if (cudaStatus != cudaSuccess) {
@@ -77,8 +84,7 @@ int main(){
         return -1;
     }
 
-    end = clock();
-    printf("\nTime elapsed in msec is %ld\n", (end - start) / CLOCKS_PER_SEC / 1000);
+    
 
     compare(input, output);
 

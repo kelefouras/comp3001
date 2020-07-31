@@ -1,3 +1,12 @@
+/*
+------------------DR VASILIOS KELEFOURAS-----------------------------------------------------
+------------------COMP3001 ------------------------------------------------------------------
+------------------PARALLEL PROGAMMING MODULE-------------------------------------------------
+------------------UNIVERSITY OF PLYMOUTH, SCHOOL OF ENGINEERING, COMPUTING AND MATHEMATICS---
+*/
+
+//TO RUN ON WINDOWS, JUST COMMENT THE clock_gettime COMMANDS
+
 //------------------------- PI PROGRAM ------------------------
 
 //gcc PI.c -o p -O2  -fopenmp

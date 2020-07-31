@@ -1,3 +1,10 @@
+/*
+------------------DR VASILIOS KELEFOURAS-----------------------------------------------------
+------------------COMP3001 ------------------------------------------------------------------
+------------------PARALLEL PROGAMMING MODULE-------------------------------------------------
+------------------UNIVERSITY OF PLYMOUTH, SCHOOL OF ENGINEERING, COMPUTING AND MATHEMATICS---
+*/
+
 //This is naive program that measures the maximum FLOPS achieved in a PC
 
 //compile with gcc flops.c -o p -O2 -D_GNU_SOURCE  -march=native -mavx -lm -D_GNU_SOURCE

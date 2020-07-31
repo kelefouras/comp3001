@@ -1,3 +1,11 @@
+/*
+------------------DR VASILIOS KELEFOURAS-----------------------------------------------------
+------------------COMP3001 ------------------------------------------------------------------
+------------------PARALLEL PROGAMMING MODULE-------------------------------------------------
+------------------UNIVERSITY OF PLYMOUTH, SCHOOL OF ENGINEERING, COMPUTING AND MATHEMATICS---
+*/
+
+//THIS IS AN IMAGE PROCESSING APPLICATION WRITTEN IN A VERY INEFFICIENT WAY...
 
 #include "string.h"
 #include <stdio.h>

@@ -1,3 +1,10 @@
+/*
+------------------DR VASILIOS KELEFOURAS-----------------------------------------------------
+------------------COMP3001 ------------------------------------------------------------------
+------------------PARALLEL PROGAMMING MODULE-------------------------------------------------
+------------------UNIVERSITY OF PLYMOUTH, SCHOOL OF ENGINEERING, COMPUTING AND MATHEMATICS---
+*/
+
 #include <cuda.h> 
 #include <cuda_runtime.h> 
 #include <device_launch_parameters.h>
@@ -318,9 +325,9 @@ int main()
 	//mmm_tiled << <dimGrid, dimBlock >> > (C_d, A_d, B_d);
 	//mmm_sw_pipeline <<< dimGrid, dimBlock >>> (C_d, A_d, B_d);
 	
-		//dim3 dimBlock(TILE, TILE, 1); 
-		//dim3 dimGrid((N + TILE_x2 - 1) / (TILE_x2), (N + TILE_x2 - 1) / (TILE_x2), 1);
-		//mmm_tiled_regblocking_factor2 << <dimGrid, dimBlock >> > (C_d, A_d, B_d);
+		dim3 dimBlock(TILE, TILE, 1); 
+		dim3 dimGrid((N + TILE_x2 - 1) / (TILE_x2), (N + TILE_x2 - 1) / (TILE_x2), 1);
+		mmm_tiled_regblocking_factor2 << <dimGrid, dimBlock >> > (C_d, A_d, B_d);
 
 	}
 

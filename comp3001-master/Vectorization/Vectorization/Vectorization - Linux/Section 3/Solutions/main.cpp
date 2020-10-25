@@ -69,8 +69,9 @@ int main() {
 
 		//output = Add_default();
 		//output = Add_SSE();
-		output = Add_AVX();
+		//output = Add_AVX();
 
+                output=MVM_AVX_without_fmadd();
 		//output=MVM_default();
 		//output=MVM_SSE();
 		//output=MVM_AVX();

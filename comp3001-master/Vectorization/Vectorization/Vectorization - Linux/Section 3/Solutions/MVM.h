@@ -13,14 +13,16 @@
 #include <sys/mman.h>
 #include <omp.h>
 //MVM initialization 
-#define M 64
-static float  X[M], Y[M], test1[M], A1[M][M] __attribute__((aligned(64))); //use static as they must be visible only in MVM.cpp file
+#define M2 128
+static float  X[M2], Y[M2], test1[M2], A1[M2][M2] __attribute__((aligned(64))); //use static as they must be visible only in MVM.cpp file
 
 void initialization_MVM();
 
 unsigned short int MVM_default();
 unsigned short int MVM_SSE();
+unsigned short int MVM_SSE_without_fmadd();
 unsigned short int MVM_AVX();
+unsigned short int MVM_AVX_without_fmadd();
 unsigned short int Compare_MVM();
 unsigned short int equal(float const a, float const b);
 

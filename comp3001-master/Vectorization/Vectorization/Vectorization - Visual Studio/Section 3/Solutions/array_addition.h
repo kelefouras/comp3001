@@ -10,8 +10,8 @@
 #include <immintrin.h>
 
 //MVM initialization 
-#define M 64
-__declspec(align(64)) static float  X1[M], X2[M], Y1[M], test2[M]; //use static as they must be visible only in MVM.cpp file
+#define M2 64
+__declspec(align(64)) static float  X1[M2], X2[M2], Y1[M2], test2[M2]; //use static as they must be visible only in MVM.cpp file
 
 void initialization_Add();
 

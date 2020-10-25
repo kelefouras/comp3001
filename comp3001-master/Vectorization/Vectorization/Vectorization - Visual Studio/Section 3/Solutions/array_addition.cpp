@@ -5,7 +5,7 @@ void initialization_Add() {
 	float e = 0.1234, p = 0.7264, r = 0.11;
 
 
-	for (unsigned int j = 0; j != M; j++) {
+	for (unsigned int j = 0; j != M2; j++) {
 		Y1[j] = 0.0;
 		test2[j] = 0.0;
 		X1[j] = (j % 7) + r;
@@ -16,7 +16,7 @@ void initialization_Add() {
 
 unsigned short int Add_default() {
 
-		for (int j = 0; j < M; j++) {
+		for (int j = 0; j < M2; j++) {
 			Y1[j] = X1[j] + X2[j];
 		}
 	
@@ -28,7 +28,7 @@ unsigned short int Add_SSE() {
 
 	__m128 num0, num1, num2, num3, num4, num5, num6;
 
-	for (int i = 0; i < M; i+=4) { //IMPORTANT: M MUST BE A MULTIPLE OF 4, OTHERWISE IT DOES NOT WORK
+	for (int i = 0; i < M2; i+=4) { //IMPORTANT: M MUST BE A MULTIPLE OF 4, OTHERWISE IT DOES NOT WORK
 		num1 = _mm_load_ps(&X1[i]); //load 4 elements of X1[]
 		num2 = _mm_load_ps(&X2[i]); //load 4 elements of X2[]
 		num3 = _mm_add_ps(num1, num2); //num3 = num1 + num2
@@ -44,7 +44,7 @@ unsigned short int Add_AVX() {
 
 	__m256  ymm0, ymm1, ymm2, ymm3, ymm4;
 
-		for (int i = 0; i < M; i += 8) { //IMPORTANT: M MUST BE A MULTIPLE OF 8, OTHERWISE IT DOES NOT WORK
+		for (int i = 0; i < M2; i += 8) { //IMPORTANT: M MUST BE A MULTIPLE OF 8, OTHERWISE IT DOES NOT WORK
 			ymm1 = _mm256_load_ps(&X1[i]); //load 8 elements of X1[]
 			ymm2 = _mm256_load_ps(&X2[i]); //load 8 elements of X2[]
 			ymm3 = _mm256_add_ps(ymm1, ymm2); //num3 = num1 + num2
@@ -59,12 +59,12 @@ unsigned short int Add_AVX() {
 unsigned short int Compare_Add() {
 
 
-		for (int j = 0; j < M; j++) {
+		for (int j = 0; j < M2; j++) {
 			test2[j] = X1[j] + X2[j];
 		}
 	
 
-	for (int j = 0; j < M; j++)
+	for (int j = 0; j < M2; j++)
 		if (equal(Y1[j], test2[j]) == 1) {
 			//printf("\n j=%d\n", j);
 			return 1;

@@ -1,5 +1,7 @@
 #include "if_cond.h"
 
+float array1[N_IF], array2[N_IF], testt[N_IF] __attribute__((aligned(64)));
+
 void if_cond_init() {
 
 	float e = 0.1234, p = 0.7264, r = 0.11;

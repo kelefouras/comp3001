@@ -1,5 +1,7 @@
 #include "MVM.h"
 
+__declspec(align(64)) float  X[M], Y[M], test1[M], A1[M][M]; 
+
 void initialization_MVM() {
 
 	float e = 0.1234, p = 0.7264, r = 0.11;

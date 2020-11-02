@@ -11,7 +11,7 @@
 
 
 #define N 16 //input size
-__declspec(align(64)) static float  C[N][N], test[N][N], A[N][N], B[N][N], Btranspose[N][N]; //use static as they must be visible only in MMM.cpp file
+
 
 void MMM_init();
 unsigned short int MMM_default();

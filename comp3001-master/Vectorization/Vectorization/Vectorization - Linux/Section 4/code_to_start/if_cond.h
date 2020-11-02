@@ -16,7 +16,7 @@
 
 //MVM initialization 
 #define N_IF 512
-static float array1[N_IF], array2[N_IF], testt[N_IF] __attribute__((aligned(64))); //use static as they must be visible only in this file
+
 
 void if_cond_init();
 unsigned short int if_cond_default();

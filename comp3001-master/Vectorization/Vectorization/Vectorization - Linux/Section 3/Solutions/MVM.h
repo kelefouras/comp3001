@@ -14,7 +14,7 @@
 #include <omp.h>
 //MVM initialization 
 #define M2 128
-static float  X[M2], Y[M2], test1[M2], A1[M2][M2] __attribute__((aligned(64))); //use static as they must be visible only in MVM.cpp file
+
 
 void initialization_MVM();
 

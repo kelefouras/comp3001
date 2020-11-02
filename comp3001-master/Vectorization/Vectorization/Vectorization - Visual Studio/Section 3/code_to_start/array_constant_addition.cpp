@@ -1,5 +1,7 @@
 #include "array_constant_addition.h"
 
+__declspec(align(64)) float  V1[M], V2[M], test3[M]; 
+
 void initialization_ConstAdd() {
 
 	float e = 0.1234, p = 0.7264, r = 0.11;

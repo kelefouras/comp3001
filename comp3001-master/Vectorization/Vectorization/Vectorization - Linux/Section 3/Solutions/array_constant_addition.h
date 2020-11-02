@@ -16,7 +16,7 @@
 
 //MVM initialization 
 #define M 10000000
-static float  V1[M], V2[M], test3[M] __attribute__((aligned(64))); //use static as they must be visible only in MVM.cpp file
+
 
 void initialization_ConstAdd();
 

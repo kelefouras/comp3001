@@ -15,7 +15,7 @@
 
 //MVM initialization 
 #define M 64
-static float  X[M], Y[M], test1[M], A1[M][M] __attribute__((aligned(64))); //use static as they must be visible only in MVM.cpp file
+
 
 void MVM_init();
 unsigned short int MVM_default();

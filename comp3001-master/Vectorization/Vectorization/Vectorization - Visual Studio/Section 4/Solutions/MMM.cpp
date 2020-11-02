@@ -1,5 +1,7 @@
 #include "MMM.h"
 
+__declspec(align(64))  float  C[N][N], test[N][N], A[N][N], B[N][N], Btranspose[N][N]; 
+
 void MMM_init() {
 
 	float e = 0.1234, p = 0.7264, r = 0.11;

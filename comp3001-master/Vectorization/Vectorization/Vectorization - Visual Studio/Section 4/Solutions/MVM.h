@@ -10,7 +10,7 @@
 
 //MVM initialization 
 #define M 64
-__declspec(align(64)) static float  X[M], Y[M], test1[M], A1[M][M]; //use static as they must be visible only in MVM.cpp file
+
 
 void MVM_init();
 

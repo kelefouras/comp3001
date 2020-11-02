@@ -15,8 +15,8 @@
 #include <omp.h>
 
 
-#define N 16 //input size
-static float  C[N][N], test[N][N], A[N][N], B[N][N], Btranspose[N][N] __attribute__((aligned(64))); //use static as they must be visible only in MMM.cpp file
+#define N 64 //input size
+
 
 void MMM_init();
 unsigned short int MMM_default();

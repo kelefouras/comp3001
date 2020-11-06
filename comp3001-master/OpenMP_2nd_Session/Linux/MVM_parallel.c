@@ -4,7 +4,7 @@
 ------------------PARALLEL PROGAMMING MODULE-------------------------------------------------
 ------------------UNIVERSITY OF PLYMOUTH, SCHOOL OF ENGINEERING, COMPUTING AND MATHEMATICS---
 */
-//compile with gcc MVM_parallel.c -o p -O2 -fopenmp -lm -fopt-info-vec-optimized
+//compile with gcc MVM_parallel.c -o p -O2 -fopenmp -lm -fopt-info-vec-optimized -march=native -mavx -D_GNU_SOURCE  -g  -pthread
 
 #include <stdio.h>
 #include <stdlib.h> //this library allows for malloc to run

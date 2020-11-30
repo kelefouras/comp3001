@@ -39,9 +39,9 @@ void initialize() {
 
 __global__ void matAdd() {
 
-	int i = blockIdx.x * blockDim.x + threadIdx.x;
+	int j = blockIdx.x * blockDim.x + threadIdx.x;
 
-	int j = blockIdx.y * blockDim.y + threadIdx.y;
+	int i = blockIdx.y * blockDim.y + threadIdx.y;
 
 	if (i < N && j < N) {
 		device_c[i][j] = device_a[i][j] + device_b[i][j];

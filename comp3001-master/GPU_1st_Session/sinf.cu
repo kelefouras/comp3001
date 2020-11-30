@@ -162,12 +162,10 @@ int compare(const float* in, float* out) {
 
 __global__ void sin_parallel(const float* in, float* out) {
     int g_id = threadIdx.x + blockIdx.x * blockDim.x;
-    /*you can either use this code or the following
+
     if (g_id < N) {
         out[g_id] = sinf(in[g_id]);
         //printf("\n %f %f\n", in[g_id], out[g_id]);
     }
-    */
-    g_id = g_id % N;//using this trick, g_id cannot be larger or equal to N
-    out[g_id] = sinf(in[g_id]);
+    
 }

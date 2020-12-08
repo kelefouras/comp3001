@@ -38,26 +38,40 @@ void initialize() {
 		}
 }
 
-//this kernel does normal copy from A to Ateanspose. Atranspose it NOT the transpose of A here.
-//the purpose of this kernel is the measure the maximum performance of copying two matrices
-__global__ void normal_copy() {
 
-	int x = blockIdx.x * TILE + threadIdx.x;
-	int y = blockIdx.y * TILE + threadIdx.y;
 
-	for (int m = 0; m < TILE; m+=8) {
-		device_Atranspose[y + m][x] = device_A[y + m][x];
+
+__global__ void transpose_ver1() {
+
+	int i = blockIdx.x * blockDim.x + threadIdx.x; //2d grid, 2d blocks
+
+	int j = blockIdx.y * blockDim.y + threadIdx.y;
+
+	if (i < N && j < N) { //this is not necessary
+		device_Atranspose[i][j] = device_A[j][i]; //each thread copies one element
+	}
+
+}
+
+__global__ void transpose_ver2() {
+
+	int i = blockIdx.x * TILE + threadIdx.x;
+
+	int j = blockIdx.y * TILE + threadIdx.y;
+
+	if (i < N && j < N) {
+		device_Atranspose[i][j] = device_A[j][i]; //each thread copies one element
 	}
 
 }
 
 __global__ void transpose_ver4() {
 
-	int x = blockIdx.x * TILE + threadIdx.x;
+	int x = blockIdx.x * TILE + threadIdx.x;//2d grid, 2d blocks
 	int y = blockIdx.y * TILE + threadIdx.y;
 
 	for (int m = 0; m < TILE; m += 8) {
-		device_Atranspose[x][y+m] = device_A[y + m][x];
+		device_Atranspose[x][y+m] = device_A[y + m][x];//each thread copies more than one elements
 	}
 
 }
@@ -67,14 +81,14 @@ __global__ void transpose_ver5() {
 
 	__shared__ float tile[TILE][TILE];
 
-	int x = blockIdx.x * TILE + threadIdx.x;
+	int x = blockIdx.x * TILE + threadIdx.x;//2d grid, 2d blocks
 	int y = blockIdx.y * TILE + threadIdx.y;
 
 	for (int m = 0; m < TILE; m += 8) {
-		tile[threadIdx.y+m][threadIdx.x] = device_A[y + m][x];
+		tile[threadIdx.y+m][threadIdx.x] = device_A[y + m][x];//each thread copies more than one elements
 	}
 
-	__syncthreads();
+	__syncthreads(); //all the threads wait here until the tile array has been initialized
 
 	x = blockIdx.y * TILE + threadIdx.x;//transpose block offset
 	y = blockIdx.x * TILE + threadIdx.y;
@@ -86,31 +100,20 @@ __global__ void transpose_ver5() {
 }
 
 
+//this kernel does a normal copy (not transpose) from A to Atranspose. Atranspose it NOT the transpose of A here.
+//the purpose of this kernel is to measure the maximum performance of copying two matrices
+__global__ void normal_copy() { 
 
+	int x = blockIdx.x * TILE + threadIdx.x; //2d grid, 2d blocks
+	int y = blockIdx.y * TILE + threadIdx.y;
 
-__global__ void transpose_ver1() {
-
-	int i = blockIdx.x * blockDim.x + threadIdx.x;
-
-	int j = blockIdx.y * blockDim.y + threadIdx.y;
-
-	//if (i < N && j < N) {
-		device_Atranspose[i][j] = device_A[j][i];
-	//}
-
-}
-
-__global__ void transpose_ver2() {
-
-	int i = blockIdx.x * TILE + threadIdx.x;
-
-	int j = blockIdx.y * TILE + threadIdx.y;
-
-	//if (i < N && j < N) {
-		device_Atranspose[i][j] = device_A[j][i];
-	//}
+	for (int m = 0; m < TILE; m+=8) {
+		device_Atranspose[y + m][x] = device_A[y + m][x];//each thread copies more than one elements
+	}
 
 }
+
+
 
 
 

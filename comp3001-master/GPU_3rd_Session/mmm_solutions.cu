@@ -54,7 +54,7 @@ __global__ void mmm_ver1(float *C,float *A, float*B) {
 
 	if (i < N && j < N) {//if threads not exceed the array bounds
 		for (int k = 0; k < N; k++) {
-			tmp += A[N * i + k] * B[N * k + j];
+			tmp += A[N * i + k] * B[N * k + j]; //each thread multiplies a row of A by a column of B
 		}
 
 		C[N * i + j] = tmp;
@@ -79,20 +79,20 @@ __global__ void mmm_tiled(float* C, float* A, float* B) {
 		aa[threadIdx.y][threadIdx.x] = A[N * (row_A)+(m * TILE + threadIdx.x)];
 		bb[threadIdx.y][threadIdx.x] = B[N * (m * TILE + threadIdx.y) + (col_B)];
 
-		__syncthreads();
+		__syncthreads(); //all threads wait until the arrays are initialized. 
 
 		for (k = 0; k < TILE; k ++) {
-			tmp += aa[threadIdx.y][k] * bb[k][threadIdx.x];
+			tmp += aa[threadIdx.y][k] * bb[k][threadIdx.x]; //each thread multiplies a sub-row of A by a sub-column of B. Each thread has its own tmp register
 		}
 
-		__syncthreads();
+		__syncthreads();//all threads wait until all the multiplications have finished 
 	}
-	C[N * row_A + col_B] = tmp;
+	C[N * row_A + col_B] = tmp; //each thread writes back to memory one element of C[]
 
 
 }
 
-
+//Like mmm_tiled() but loop unroll has been manually applied to k loop
 //Tiled version, uses shared memory
 //This implementation uses a 2d grid and 2d blocks of threads.
 //each thread computes a value in C[], thus N*N threads
@@ -157,16 +157,17 @@ __global__ void mmm_tiled_regblocking_factor2 (float* C, float* A, float* B) {
 		bb1[threadIdx.y][threadIdx.x] = B[N * (m * TILE + threadIdx.y) + (col_B)];
 		bb2[threadIdx.y][threadIdx.x] = B[N * (m * TILE + threadIdx.y) + (col_B)+TILE];
 
-		__syncthreads();
+		__syncthreads();//all threads wait until the arrays are initialized.
 
 		for (k = 0; k < TILE; k++) {
+			//each thread multiplies 2 sub-rows by 2 sub-columns. each thread uses four registers for storing the intermediate results
 			tmp0 += aa1[threadIdx.y][k] * bb1[k][threadIdx.x];
 			tmp1 += aa1[threadIdx.y][k] * bb2[k][threadIdx.x];
 			tmp2 += aa2[threadIdx.y][k] * bb1[k][threadIdx.x];
 			tmp3 += aa2[threadIdx.y][k] * bb2[k][threadIdx.x];
 		}
 
-		__syncthreads();
+		__syncthreads();//all threads wait until all the multiplications have finished 
 	}
 	C[row_A + col_B] = tmp0;
 	C[row_A + col_B + TILE] = tmp1;
@@ -178,14 +179,14 @@ __global__ void mmm_tiled_regblocking_factor2 (float* C, float* A, float* B) {
 
 
 
-
+//In mmm_sw_pipeline() routine, software pipelining is used to hide memory latency. In this case, we use two  times  more  shared memory,  since  we  need  the  current tiles  and the  next ones.  When  the  current  tiles are multiplied by each other, the next tiles are loaded from DDR to shared memory, in parallel; in this way,  the  cores  do  not  remain  idle  until  the  tiles  are  fetched.  This  is  an  advanced  implementation  and perhaps out of the scope of this module.
  __global__ void mmm_sw_pipeline(float* C, float* A, float* B) {
 
-	__shared__ float aa1[32][32];
-	__shared__ float bb1[32][32];
+	__shared__ float aa1[32][32]; //current tile of A
+	__shared__ float bb1[32][32]; //current tile of B
 
-	__shared__ float aa1_next[32][32];
-	__shared__ float bb1_next[32][32];
+	__shared__ float aa1_next[32][32]; //next tile of A
+	__shared__ float bb1_next[32][32]; //next tile of B
 
 
 
@@ -200,7 +201,7 @@ __global__ void mmm_tiled_regblocking_factor2 (float* C, float* A, float* B) {
 	float p1 = 0.0;
 
 
-	//load tiles for m=0;
+	//load tiles for m=0, these are the first tiles
 	aa1[ty][tx] = A[row * N + (0 * 32 + tx)];
 	bb1[ty][tx] = B[(0 * 32 + ty) * N + col];
 
@@ -212,12 +213,12 @@ __global__ void mmm_tiled_regblocking_factor2 (float* C, float* A, float* B) {
 
 		//-------------------------------------m
 		for (k = 0; k != 32; k++) {
-			p1 += aa1[ty][k] * bb1[k][tx];
+			p1 += aa1[ty][k] * bb1[k][tx]; //multiply the current tiles
 			
 		}
 
 
-		aa1_next[ty][tx] = A[row * N + (m * 32 + tx)];	
+		aa1_next[ty][tx] = A[row * N + (m * 32 + tx)];//load the next tiles	 
 		bb1_next[ty][tx] = B[(m * 32 + ty) * N + col];
 		
 
@@ -225,19 +226,19 @@ __global__ void mmm_tiled_regblocking_factor2 (float* C, float* A, float* B) {
 
 		//----------------------------------------m+1
 		for (k = 0; k != 32; k++) {
-			p1 += aa1_next[ty][k] * bb1_next[k][tx];
+			p1 += aa1_next[ty][k] * bb1_next[k][tx]; //multiply the next tiles
 			
 		}
 
 
-		aa1[ty][tx] = A[row * N + ((m + 1) * 32 + tx)];
+		aa1[ty][tx] = A[row * N + ((m + 1) * 32 + tx)]; //load the current tiles 
 		bb1[ty][tx] = B[((m + 1) * 32 + ty) * N + col];
 		
 		__syncthreads();
 
 	}
 
-
+	//padding code follows
 
 	for (int k = 0; k != 32; k++) {
 		p1 += aa1[ty][k] * bb1[k][tx];

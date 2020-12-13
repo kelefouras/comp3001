@@ -176,6 +176,54 @@ int image_detection() {
 }
 
 
+/*
+void Gaussian_Blur_default_unrolled() {
+
+    short int row, col;
+    short int newPixel;
+
+    for (row = 2; row < N - 2; row++) {
+        for (col = 2; col < M - 2; col++) {
+            newPixel = 0;
+
+            newPixel += in_image[row - 2][col - 2] * gaussianMask[0][0];
+            newPixel += in_image[row - 2][col - 1] * gaussianMask[0][1];
+            newPixel += in_image[row - 2][col] * gaussianMask[0][2];
+            newPixel += in_image[row - 2][col + 1] * gaussianMask[0][3];
+            newPixel += in_image[row - 2][col + 2] * gaussianMask[0][4];
+
+            newPixel += in_image[row - 1][col - 2] * gaussianMask[1][0];
+            newPixel += in_image[row - 1][col - 1] * gaussianMask[1][1];
+            newPixel += in_image[row - 1][col] *  gaussianMask[1][2];
+            newPixel += in_image[row - 1][col + 1] * gaussianMask[1][3];
+            newPixel += in_image[row - 1][col + 2] * gaussianMask[1][4];
+
+            newPixel += in_image[row][col - 2] * gaussianMask[2][0];
+            newPixel += in_image[row][col - 1] * gaussianMask[2][1];
+            newPixel += in_image[row][col] * gaussianMask[2][2];
+            newPixel += in_image[row][col + 1] * gaussianMask[2][3];
+            newPixel += in_image[row][col + 2] * gaussianMask[2][4];
+
+            newPixel += in_image[row + 1][col - 2] * gaussianMask[3][0];
+            newPixel += in_image[row + 1][col - 1] * gaussianMask[3][1];
+            newPixel += in_image[row + 1][col] * gaussianMask[3][2];
+            newPixel += in_image[row + 1][col + 1] * gaussianMask[3][3];
+            newPixel += in_image[row + 1][col + 2] * gaussianMask[3][4];
+
+            newPixel += in_image[row + 2][col - 2] * gaussianMask[4][0];
+            newPixel += in_image[row + 2][col - 1] * gaussianMask[4][1];
+            newPixel += in_image[row + 2][col] * gaussianMask[4][2];
+            newPixel += in_image[row + 2][col + 1] * gaussianMask[4][3];
+            newPixel += in_image[row + 2][col + 2] * gaussianMask[4][4];
+
+            filt_image[row][col] = newPixel / 159;
+
+
+        }
+    }
+
+} 
+*/
 
 
 void read_image(char filename[], unsigned char **image)

@@ -92,7 +92,7 @@ for (i=0;i<N;i++)
 
 write_image2(OUT_NAME1,print);
 
-/*---------------------------- Determine edge directions and gradient strengths -------------------------------------------*/
+/*---------------------------- Sobel - Determine edge directions and gradient strengths -------------------------------------------*/
 	for (row = 1; row < N-1; row++) {
 		for (col = 1; col < M-1; col++) {
 

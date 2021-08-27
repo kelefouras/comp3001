@@ -26,6 +26,6 @@ unsigned short int Compare_MMM();
 
 extern unsigned short int equal(float const a, float const b); //used extern as this is defined in MVM.h
 
-#define EPSILON 0.01
+#define EPSILON 0.0001
 
 

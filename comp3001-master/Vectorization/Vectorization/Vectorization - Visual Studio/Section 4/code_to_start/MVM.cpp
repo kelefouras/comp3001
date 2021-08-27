@@ -112,7 +112,7 @@ unsigned short int Compare_MVM() {
 unsigned short int equal(float const a, float const b) {
 	float temp = a - b;
 	//printf("\n %f  %f", a, b);
-	if (fabs(temp) < EPSILON)
+	if ( (fabs(temp)/fabs(b)) < EPSILON)
 		return 0; //success
 	else
 		return 1;

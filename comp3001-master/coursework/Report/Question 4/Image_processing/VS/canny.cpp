@@ -113,7 +113,8 @@ int image_detection() {
 
 	write_image(OUT_NAME1, print);
 
-	/*---------------------------- Determine edge directions and gradient strengths -------------------------------------------*/
+
+	/*---------------------------- Start of Sobel  -------------------------------------------*/
 	for (row = 1; row < N - 1; row++) {
 		for (col = 1; col < M - 1; col++) {
 
@@ -147,7 +148,7 @@ int image_detection() {
 			edgeDir[row][col] = newAngle;
 		}
 	}
-
+	/*---------------------------- End of Sobel  -------------------------------------------*/
 
 
 	/* write gradient to image*/

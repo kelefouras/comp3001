@@ -13,14 +13,12 @@
 #define OUT_NAME3 "out3.pgm"
 #define OUT_NAME4 "out4.pgm"
 
-#define	N 1024
+#define N 1024
 #define M 1024
 
 
-
-
-#define	 UpThr  30	
-#define	 LwThr  10	
+void GaussianBlur();
+void Sobel();
 
 void image_detection();
 

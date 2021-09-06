@@ -4,17 +4,14 @@ unsigned char filt[N][M], gradient[N][M],grad2[N][M],edgeDir[N][M];
 unsigned char gaussianMask[5][5];
 signed char GxMask[3][3],GyMask[3][3];
 
-void image_detection(){
+void GaussianBlur(){
 
 
 int i,j;
 	unsigned int    row, col;		
 	int rowOffset;					
 	int colOffset;					
-	int Gx;						
-	int Gy;							
-	float thisAngle;				
-	int newAngle;								
+						
 	int newPixel;				
 			
         unsigned char temp;					
@@ -53,22 +50,6 @@ gaussianMask[4][2] = 5;
 gaussianMask[4][3] = 4;
 gaussianMask[4][4] = 2;	
 
-/* Declare Sobel masks */
-	GxMask[0][0] = -1; GxMask[0][1] = 0; GxMask[0][2] = 1;
-	GxMask[1][0] = -2; GxMask[1][1] = 0; GxMask[1][2] = 2;
-	GxMask[2][0] = -1; GxMask[2][1] = 0; GxMask[2][2] = 1;
-	
-	GyMask[0][0] = -1; GyMask[0][1] = -2; GyMask[0][2] = -1;
-	GyMask[1][0] =  0; GyMask[1][1] =  0; GyMask[1][2] =  0;
-	GyMask[2][0] = 1; GyMask[2][1] = 2; GyMask[2][2] = 1;
-
-
-
-
-
-
-
-
 
 /*---------------------- Gaussian Blur ---------------------------------*/
 	for (row = 2; row < N-2; row++) {
@@ -85,12 +66,36 @@ gaussianMask[4][4] = 2;
 	}
 
 
+}
 
-for (i=0;i<N;i++)
- for (j=0;j<M;j++)
-  print[i][j]=filt[i][j];
 
-write_image2(OUT_NAME1,print);
+
+void Sobel(){
+
+
+int i,j;
+	unsigned int    row, col;		
+	int rowOffset;					
+	int colOffset;					
+	int Gx;						
+	int Gy;							
+	float thisAngle;				
+	int newAngle;								
+	int newPixel;				
+			
+        unsigned char temp;					
+
+
+
+/* Declare Sobel masks */
+	GxMask[0][0] = -1; GxMask[0][1] = 0; GxMask[0][2] = 1;
+	GxMask[1][0] = -2; GxMask[1][1] = 0; GxMask[1][2] = 2;
+	GxMask[2][0] = -1; GxMask[2][1] = 0; GxMask[2][2] = 1;
+	
+	GyMask[0][0] = -1; GyMask[0][1] = -2; GyMask[0][2] = -1;
+	GyMask[1][0] =  0; GyMask[1][1] =  0; GyMask[1][2] =  0;
+	GyMask[2][0] = 1; GyMask[2][1] = 2; GyMask[2][2] = 1;
+
 
 	/*---------------------------- Start of Sobel  -------------------------------------------*/
 	for (row = 1; row < N-1; row++) {
@@ -128,6 +133,40 @@ write_image2(OUT_NAME1,print);
 	}
 	/*---------------------------- End of Sobel  -------------------------------------------*/
 
+}
+
+
+
+
+void image_detection(){
+
+
+int i,j;
+	unsigned int    row, col;		
+	int rowOffset;					
+	int colOffset;					
+	int Gx;						
+	int Gy;							
+	float thisAngle;				
+	int newAngle;								
+	int newPixel;				
+			
+        unsigned char temp;					
+
+
+
+GaussianBlur();
+
+
+for (i=0;i<N;i++)
+ for (j=0;j<M;j++)
+  print[i][j]=filt[i][j];
+
+write_image2(OUT_NAME1,print);
+
+
+Sobel();
+
 
 /* write gradient to image*/
 
@@ -143,54 +182,6 @@ write_image2(OUT_NAME2,print);
 }
 
 
-/*
-void Gaussian_Blur_default_unrolled() {
-
-    short int row, col;
-    short int newPixel;
-
-    for (row = 2; row < N - 2; row++) {
-        for (col = 2; col < M - 2; col++) {
-            newPixel = 0;
-
-            newPixel += in_image[row - 2][col - 2] * gaussianMask[0][0];
-            newPixel += in_image[row - 2][col - 1] * gaussianMask[0][1];
-            newPixel += in_image[row - 2][col] * gaussianMask[0][2];
-            newPixel += in_image[row - 2][col + 1] * gaussianMask[0][3];
-            newPixel += in_image[row - 2][col + 2] * gaussianMask[0][4];
-
-            newPixel += in_image[row - 1][col - 2] * gaussianMask[1][0];
-            newPixel += in_image[row - 1][col - 1] * gaussianMask[1][1];
-            newPixel += in_image[row - 1][col] *  gaussianMask[1][2];
-            newPixel += in_image[row - 1][col + 1] * gaussianMask[1][3];
-            newPixel += in_image[row - 1][col + 2] * gaussianMask[1][4];
-
-            newPixel += in_image[row][col - 2] * gaussianMask[2][0];
-            newPixel += in_image[row][col - 1] * gaussianMask[2][1];
-            newPixel += in_image[row][col] * gaussianMask[2][2];
-            newPixel += in_image[row][col + 1] * gaussianMask[2][3];
-            newPixel += in_image[row][col + 2] * gaussianMask[2][4];
-
-            newPixel += in_image[row + 1][col - 2] * gaussianMask[3][0];
-            newPixel += in_image[row + 1][col - 1] * gaussianMask[3][1];
-            newPixel += in_image[row + 1][col] * gaussianMask[3][2];
-            newPixel += in_image[row + 1][col + 1] * gaussianMask[3][3];
-            newPixel += in_image[row + 1][col + 2] * gaussianMask[3][4];
-
-            newPixel += in_image[row + 2][col - 2] * gaussianMask[4][0];
-            newPixel += in_image[row + 2][col - 1] * gaussianMask[4][1];
-            newPixel += in_image[row + 2][col] * gaussianMask[4][2];
-            newPixel += in_image[row + 2][col + 1] * gaussianMask[4][3];
-            newPixel += in_image[row + 2][col + 2] * gaussianMask[4][4];
-
-            filt_image[row][col] = newPixel / 159;
-
-
-        }
-    }
-
-} 
-*/
 
 
 

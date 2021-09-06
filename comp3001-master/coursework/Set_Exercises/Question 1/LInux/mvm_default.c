@@ -58,13 +58,13 @@ if(sched_setaffinity(0,sizeof(mask),&mask) == -1)
 //-------------------initialize ---------------------------
 for (i=0;i<N;i++){
 Y[i]=0.0;
-X[i]= ((i%99)/3);
+X[i]= (float) ((i%99)/3);
 }
 
 
 for (i=0;i<N;i++)
 for (j=0;j<N;j++)
-A[i][j]=(((i+j)%99)/3);
+A[i][j]=(float) (((i+j)%99)/3);
 
 
 start1 = clock();

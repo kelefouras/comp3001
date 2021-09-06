@@ -7,22 +7,15 @@ unsigned char gaussianMask[5][5];
 signed char GxMask[3][3], GyMask[3][3];
 
 
-
-int image_detection() {
-
+void GaussianBlur() {
 
 	int i, j;
 	unsigned int    row, col;
 	int rowOffset;
 	int colOffset;
-	int Gx;
-	int Gy;
-	float thisAngle;
-	int newAngle;
 	int newPixel;
 
 	unsigned char temp;
-
 
 
 	/* Declare Gaussian mask */
@@ -57,40 +50,6 @@ int image_detection() {
 	gaussianMask[4][3] = 4;
 	gaussianMask[4][4] = 2;
 
-	/* Declare Sobel masks */
-	GxMask[0][0] = -1; GxMask[0][1] = 0; GxMask[0][2] = 1;
-	GxMask[1][0] = -2; GxMask[1][1] = 0; GxMask[1][2] = 2;
-	GxMask[2][0] = -1; GxMask[2][1] = 0; GxMask[2][2] = 1;
-
-	GyMask[0][0] = -1; GyMask[0][1] = -2; GyMask[0][2] = -1;
-	GyMask[1][0] = 0; GyMask[1][1] = 0; GyMask[1][2] = 0;
-	GyMask[2][0] = 1; GyMask[2][1] = 2; GyMask[2][2] = 1;
-
-
-	/*---------------------- read 1st frame -----------------------------------*/
-	frame1 = (unsigned char**)malloc(N * sizeof(unsigned char *));
-	if (frame1 == NULL) { printf("\nerror with malloc fr"); return -1; }
-	for (i = 0; i < N; i++) {
-		frame1[i] = (unsigned char*)malloc(M * sizeof(unsigned char));
-		if (frame1[i] == NULL) { printf("\nerror with malloc fr"); return -1; }
-	}
-
-
-
-	print = (unsigned char**)malloc(N * sizeof(unsigned char *));
-	if (print == NULL) { printf("\nerror with malloc fr"); return -1; }
-	for (i = 0; i < N; i++) {
-		print[i] = (unsigned char*)malloc(M * sizeof(unsigned char));
-		if (print[i] == NULL) { printf("\nerror with malloc fr"); return -1; }
-	}
-
-	for (i = 0; i < N; i++)
-		for (j = 0; j < M; j++)
-			print[i][j] = 0;
-
-	read_image(IN, frame1);
-
-	   	  
 	/*---------------------- Gaussian Blur ---------------------------------*/
 	for (row = 2; row < N - 2; row++) {
 		for (col = 2; col < M - 2; col++) {
@@ -106,15 +65,35 @@ int image_detection() {
 	}
 
 
-
-	for (i = 0; i < N; i++)
-		for (j = 0; j < M; j++)
-			print[i][j] = filt[i][j];
-
-	write_image(OUT_NAME1, print);
+}
 
 
-	/*---------------------------- Start of Sobel  -------------------------------------------*/
+void Sobel() {
+
+
+	int i, j;
+	unsigned int    row, col;
+	int rowOffset;
+	int colOffset;
+	int Gx;
+	int Gy;
+	float thisAngle;
+	int newAngle;
+	int newPixel;
+
+	unsigned char temp;
+
+
+	/* Declare Sobel masks */
+	GxMask[0][0] = -1; GxMask[0][1] = 0; GxMask[0][2] = 1;
+	GxMask[1][0] = -2; GxMask[1][1] = 0; GxMask[1][2] = 2;
+	GxMask[2][0] = -1; GxMask[2][1] = 0; GxMask[2][2] = 1;
+
+	GyMask[0][0] = -1; GyMask[0][1] = -2; GyMask[0][2] = -1;
+	GyMask[1][0] = 0; GyMask[1][1] = 0; GyMask[1][2] = 0;
+	GyMask[2][0] = 1; GyMask[2][1] = 2; GyMask[2][2] = 1;
+
+	/*---------------------------- Determine edge directions and gradient strengths -------------------------------------------*/
 	for (row = 1; row < N - 1; row++) {
 		for (col = 1; col < M - 1; col++) {
 
@@ -130,7 +109,7 @@ int image_detection() {
 				}
 			}
 
-			gradient[row][col] = (unsigned char)(sqrt(Gx*Gx + Gy * Gy));
+			gradient[row][col] = (unsigned char)(sqrt(Gx * Gx + Gy * Gy));
 
 			thisAngle = (((atan2(Gx, Gy)) / 3.14159) * 180.0);
 
@@ -148,7 +127,63 @@ int image_detection() {
 			edgeDir[row][col] = newAngle;
 		}
 	}
-	/*---------------------------- End of Sobel  -------------------------------------------*/
+
+}
+
+
+int image_detection() {
+
+
+	int i, j;
+	unsigned int    row, col;
+	int rowOffset;
+	int colOffset;
+	int Gx;
+	int Gy;
+	float thisAngle;
+	int newAngle;
+	int newPixel;
+
+	unsigned char temp;
+
+
+
+	/*---------------------- create the image  -----------------------------------*/
+	frame1 = (unsigned char**)malloc(N * sizeof(unsigned char *));
+	if (frame1 == NULL) { printf("\nerror with malloc fr"); return -1; }
+	for (i = 0; i < N; i++) {
+		frame1[i] = (unsigned char*)malloc(M * sizeof(unsigned char));
+		if (frame1[i] == NULL) { printf("\nerror with malloc fr"); return -1; }
+	}
+
+
+	//create the image
+	print = (unsigned char**)malloc(N * sizeof(unsigned char *));
+	if (print == NULL) { printf("\nerror with malloc fr"); return -1; }
+	for (i = 0; i < N; i++) {
+		print[i] = (unsigned char*)malloc(M * sizeof(unsigned char));
+		if (print[i] == NULL) { printf("\nerror with malloc fr"); return -1; }
+	}
+
+	//initialize the image
+	for (i = 0; i < N; i++)
+		for (j = 0; j < M; j++)
+			print[i][j] = 0;
+
+	read_image(IN, frame1);
+
+
+	GaussianBlur();
+	   	  	
+
+	for (i = 0; i < N; i++)
+		for (j = 0; j < M; j++)
+			print[i][j] = filt[i][j];
+
+	write_image(OUT_NAME1, print);
+
+	Sobel();
+
 
 
 	/* write gradient to image*/
@@ -177,54 +212,6 @@ int image_detection() {
 }
 
 
-/*
-void Gaussian_Blur_default_unrolled() {
-
-    short int row, col;
-    short int newPixel;
-
-    for (row = 2; row < N - 2; row++) {
-        for (col = 2; col < M - 2; col++) {
-            newPixel = 0;
-
-            newPixel += in_image[row - 2][col - 2] * gaussianMask[0][0];
-            newPixel += in_image[row - 2][col - 1] * gaussianMask[0][1];
-            newPixel += in_image[row - 2][col] * gaussianMask[0][2];
-            newPixel += in_image[row - 2][col + 1] * gaussianMask[0][3];
-            newPixel += in_image[row - 2][col + 2] * gaussianMask[0][4];
-
-            newPixel += in_image[row - 1][col - 2] * gaussianMask[1][0];
-            newPixel += in_image[row - 1][col - 1] * gaussianMask[1][1];
-            newPixel += in_image[row - 1][col] *  gaussianMask[1][2];
-            newPixel += in_image[row - 1][col + 1] * gaussianMask[1][3];
-            newPixel += in_image[row - 1][col + 2] * gaussianMask[1][4];
-
-            newPixel += in_image[row][col - 2] * gaussianMask[2][0];
-            newPixel += in_image[row][col - 1] * gaussianMask[2][1];
-            newPixel += in_image[row][col] * gaussianMask[2][2];
-            newPixel += in_image[row][col + 1] * gaussianMask[2][3];
-            newPixel += in_image[row][col + 2] * gaussianMask[2][4];
-
-            newPixel += in_image[row + 1][col - 2] * gaussianMask[3][0];
-            newPixel += in_image[row + 1][col - 1] * gaussianMask[3][1];
-            newPixel += in_image[row + 1][col] * gaussianMask[3][2];
-            newPixel += in_image[row + 1][col + 1] * gaussianMask[3][3];
-            newPixel += in_image[row + 1][col + 2] * gaussianMask[3][4];
-
-            newPixel += in_image[row + 2][col - 2] * gaussianMask[4][0];
-            newPixel += in_image[row + 2][col - 1] * gaussianMask[4][1];
-            newPixel += in_image[row + 2][col] * gaussianMask[4][2];
-            newPixel += in_image[row + 2][col + 1] * gaussianMask[4][3];
-            newPixel += in_image[row + 2][col + 2] * gaussianMask[4][4];
-
-            filt_image[row][col] = newPixel / 159;
-
-
-        }
-    }
-
-} 
-*/
 
 
 void read_image(char filename[], unsigned char **image)

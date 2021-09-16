@@ -37,7 +37,7 @@ for (i=0;i<N;i++)
 
 read_image(IN,frame1);
 
-Gaussian_Blur_3x3();
+image_detection();
 
 
   //write_image2(OUT, print);

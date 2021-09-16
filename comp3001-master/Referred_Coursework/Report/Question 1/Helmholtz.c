@@ -33,7 +33,7 @@ int main ( ) {
 
   wtime = omp_get_wtime ( );
 
-  //routine to optimize
+  //---------------------routine to optimize----------------------------------
   helmholtz ( m, n, it_max, alpha, omega, tol );
 
   wtime = omp_get_wtime ( ) - wtime;

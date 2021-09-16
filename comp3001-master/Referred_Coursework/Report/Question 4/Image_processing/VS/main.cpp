@@ -6,7 +6,7 @@ int main() {
 
 	int out, i, j;
 	   
-	Gaussian_Blur_3x3();
+	image_detection();
 
 	system("pause");
 	return 0;

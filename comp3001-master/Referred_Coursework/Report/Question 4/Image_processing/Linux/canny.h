@@ -13,16 +13,14 @@
 #define OUT_NAME3 "out3.pgm"
 #define OUT_NAME4 "out4.pgm"
 
-#define	N 1024
+#define N 1024
 #define M 1024
 
 
+void GaussianBlur();
+void Sobel();
 
-
-#define	 UpThr  30	
-#define	 LwThr  10	
-
-void Gaussian_Blur_3x3();
+void image_detection();
 
 void write_acc(char* filename,int angl);
 void read_frame(char filename[80], unsigned char image[N][M]);

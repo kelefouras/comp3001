@@ -28,7 +28,7 @@ int Compare_MMM();
 inline unsigned short int equal(float const a, float const b);
 
 
-#define EPSILON 0.01
+#define EPSILON 0.00001
 
 #define MAX_NUMBER_OF_BLOCKS_PER_DIM 65535 //max number of blocks that our GPU can handle (for one dimension only)
 
@@ -193,12 +193,11 @@ void MMM_default() {
 unsigned short int equal(float const a, float const b) {
 	float temp = a - b;
 	//printf("\n %f  %f", a, b);
-	if (fabs(temp) < EPSILON)
+	if (fabs(temp/b) < EPSILON)
 		return 0; //success
 	else
 		return 1;
 }
-
 
 int Compare_MMM() {
 

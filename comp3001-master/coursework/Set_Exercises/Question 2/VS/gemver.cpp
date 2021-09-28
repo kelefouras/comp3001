@@ -16,14 +16,14 @@
 #include <iostream>
 #include <immintrin.h>
 
-void initialization();
-unsigned short int gemver_default();
-unsigned short int gemver_vectorized();
-unsigned short int Compare_Gemver();
-inline unsigned short int equal(float const a, float const b);
+void initialize();
+void initialize_again();
+void slow_routine(float alpha, float beta);//you will optimize this routine
+unsigned short int Compare(float alpha, float beta);
+unsigned short int equal(float const a, float const b) ;
 
-#define P 4096 //input size
-__declspec(align(64)) float A2[P][P], test4[P][P], u1[P], v1[P], u2[P], v2[P];
+#define N 8192 //input size
+__declspec(align(64)) float A[N][N], u1[N], u2[N], v1[N], v2[N], x[N], y[N], w[N], z[N], test[N];
 
 #define TIMES_TO_RUN 1 //how many times the function will run
 #define EPSILON 0.0001
@@ -33,19 +33,19 @@ int main() {
 	//define the timers measuring execution time
 	clock_t start_1, end_1; //ignore this for  now
 
-	initialization();
+	initialize();
 
 	start_1 = clock(); //start the timer 
 
 	for (int i = 0; i < TIMES_TO_RUN; i++)//this loop is needed to get an accurate ex.time value
-		gemver_default();
+ 		slow_routine(alpha,beta);
 		
 
 	end_1 = clock(); //end the timer 
 
 	printf(" clock() method: %ldms\n", (end_1 - start_1) / (CLOCKS_PER_SEC / 1000));//print the ex.time
 
-	if (Compare_Gemver() == 0)
+	if (Compare(alpha,beta) == 0)
 		printf("\nCorrect Result\n");
 	else 
 		printf("\nINcorrect Result\n");
@@ -56,56 +56,116 @@ int main() {
 }
 
 
+void initialize(){
 
-void initialization() {
+unsigned int    i,j;
 
-	float e = 0.1234, p = 0.7264, r = 0.11;
+//initialization
+for (i=0;i<N;i++)
+for (j=0;j<N;j++){
+A[i][j]= 1.1;
 
-	//gemver
-	for (int i = 0; i < P; i++)
-		for (int j = 0; j < P; j++) {
-			A2[i][j] = 0.0;
-			test4[i][j] = 0.0;
+}
+
+for (i=0;i<N;i++){
+z[i]=(i%9)*0.8;
+x[i]=0.1;
+u1[i]=(i%9)*0.2;
+u2[i]=(i%9)*0.3;
+v1[i]=(i%9)*0.4;
+v2[i]=(i%9)*0.5;
+w[i]=0.0;
+y[i]=(i%9)*0.7;
+}
+
+}
+
+void initialize_again(){
+
+unsigned int    i,j;
+
+//initialization
+for (i=0;i<N;i++)
+for (j=0;j<N;j++){
+A[i][j]= 1.1;
+
+}
+
+for (i=0;i<N;i++){
+z[i]=(i%9)*0.8;
+x[i]=0.1;
+test[i]=0.0;
+u1[i]=(i%9)*0.2;
+u2[i]=(i%9)*0.3;
+v1[i]=(i%9)*0.4;
+v2[i]=(i%9)*0.5;
+y[i]=(i%9)*0.7;
+}
+
+}
+
+//you will optimize this routine
+void slow_routine(float alpha, float beta){
+
+unsigned int i,j;
+
+  for (i = 0; i < N; i++)
+    for (j = 0; j < N; j++)
+      A[i][j] = A[i][j] + u1[i] * v1[j] + u2[i] * v2[j];
+
+
+  for (i = 0; i < N; i++)
+    for (j = 0; j < N; j++)
+      x[i] = x[i] + beta * A[j][i] * y[j];
+
+  for (i = 0; i < N; i++)
+    x[i] = x[i] + z[i];
+
+
+  for (i = 0; i < N; i++)
+    for (j = 0; j < N; j++)
+      w[i] = w[i] +  alpha * A[i][j] * x[j];
+
+
+}
+
+
+unsigned short int Compare(float alpha, float beta) {
+
+unsigned int i,j;
+
+initialize_again();
+
+
+  for (i = 0; i < N; i++)
+    for (j = 0; j < N; j++)
+      A[i][j] = A[i][j] + u1[i] * v1[j] + u2[i] * v2[j];
+
+
+  for (i = 0; i < N; i++)
+    for (j = 0; j < N; j++)
+      x[i] = x[i] + beta * A[j][i] * y[j];
+
+  for (i = 0; i < N; i++)
+    x[i] = x[i] + z[i];
+
+
+  for (i = 0; i < N; i++){
+    for (j = 0; j < N; j++){
+     test[i]= test[i] + alpha * A[i][j] * x[j];
+     } }
+
+
+
+    for (j = 0; j < N; j++){
+	if (equal(w[j],test[j]) == 1){
+	  printf("\n %f %f",test[j], w[j]);
+		return -1;
+		}
 		}
 
-	for (int j = 0; j < P; j++) {
-		u1[j] = e + (j % 9);
-		v1[j] = e - (j % 9) + 1.1;
-		u2[j] = p + (j % 9) - 1.2;
-		v2[j] = p - (j % 9) + 2.2;
-	}
-
-
-}
-
-
-
-unsigned short int gemver_default() {
-
-	for (int i = 0; i < P; i++)
-		for (int j = 0; j < P; j++)
-			A2[i][j] += u1[i] * v1[j] + u2[i] * v2[j];
-
 	return 0;
 }
-
-
-
-unsigned short int Compare_Gemver() {
-
-	for (int i = 0; i < P; i++)
-		for (int j = 0; j < P; j++)
-			test4[i][j] += u1[i] * v1[j] + u2[i] * v2[j];
-
-	for (int i = 0; i < P; i++)
-		for (int j = 0; j < P; j++)
-			if (equal(test4[i][j], A2[i][j]) == 1)
-				return -1;
-
-	return 0;
-}
-
-
 
 
 

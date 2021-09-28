@@ -30,6 +30,8 @@ __declspec(align(64)) float A[N][N], u1[N], u2[N], v1[N], v2[N], x[N], y[N], w[N
 
 int main() {
 
+float alpha=0.23, beta=0.45;
+
 	//define the timers measuring execution time
 	clock_t start_1, end_1; //ignore this for  now
 

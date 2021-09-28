@@ -30,7 +30,7 @@ __declspec(align(64)) float A[N][N], u1[N], u2[N], v1[N], v2[N], x[N], y[N], w[N
 
 int main() {
 
-float alpha=0.23, beta=0.45;
+float alpha=0.23f, beta=0.45f;
 
 	//define the timers measuring execution time
 	clock_t start_1, end_1; //ignore this for  now
@@ -65,19 +65,19 @@ unsigned int    i,j;
 //initialization
 for (i=0;i<N;i++)
 for (j=0;j<N;j++){
-A[i][j]= 1.1;
+A[i][j]= 1.1f;
 
 }
 
 for (i=0;i<N;i++){
-z[i]=(i%9)*0.8;
-x[i]=0.1;
-u1[i]=(i%9)*0.2;
-u2[i]=(i%9)*0.3;
-v1[i]=(i%9)*0.4;
-v2[i]=(i%9)*0.5;
-w[i]=0.0;
-y[i]=(i%9)*0.7;
+z[i]=(i%9)*0.8f;
+x[i]=0.1f;
+u1[i]=(i%9)*0.2f;
+u2[i]=(i%9)*0.3f;
+v1[i]=(i%9)*0.4f;
+v2[i]=(i%9)*0.5f;
+w[i]=0.0f;
+y[i]=(i%9)*0.7f;
 }
 
 }
@@ -89,19 +89,19 @@ unsigned int    i,j;
 //initialization
 for (i=0;i<N;i++)
 for (j=0;j<N;j++){
-A[i][j]= 1.1;
+A[i][j]= 1.1f;
 
 }
 
 for (i=0;i<N;i++){
-z[i]=(i%9)*0.8;
-x[i]=0.1;
-test[i]=0.0;
-u1[i]=(i%9)*0.2;
-u2[i]=(i%9)*0.3;
-v1[i]=(i%9)*0.4;
-v2[i]=(i%9)*0.5;
-y[i]=(i%9)*0.7;
+z[i]=(i%9)*0.8f;
+x[i]=0.1f;
+test[i]=0.0f;
+u1[i]=(i%9)*0.2f;
+u2[i]=(i%9)*0.3f;
+v1[i]=(i%9)*0.4f;
+v2[i]=(i%9)*0.5f;
+y[i]=(i%9)*0.7f;
 }
 
 }

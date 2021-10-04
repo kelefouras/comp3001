@@ -79,7 +79,7 @@ printf("\n print_using_pointers2() is just called");
 
 for (i=0;i<N;i++)
  for (j=0;j<N;j++)
- printf("\n element %d equals to %d",i, *(ptr + i*N + j) );
+ printf("\n element (%d,%d) equals to %d", i, j, *(ptr + i*N + j) );
 
 printf("\n print_using_pointers2() is just ended\n\n");
 

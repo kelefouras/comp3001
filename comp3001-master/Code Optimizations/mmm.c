@@ -23,6 +23,7 @@
 void initialize();
 void mmm();
 void array_copying();
+void mmm_reg_blocking_2()
 void mmm_reg_blocking_4();
 void mmm_reg_blocking_8();
 void mmm_tiling_bad();
@@ -98,6 +99,29 @@ for (i=0;i<N;i++)
 
 }
 
+//assume that N%2==0
+void mmm_reg_blocking_2(){
+
+int i,j,k;
+float c0,c1,a;
+
+//register blocking has been applied to j loop by a factor of 2.
+for (i=0;i<N;i++)
+ for (j=0;j<N;j+=2){
+ c0=C[i][j];
+ c1=C[i][j+1];
+  for (k=0;k<N;k++) {
+ a=A[i][k];
+ c0+=a*B[k][j];
+ c1+=a*B[k][j+1];
+}
+C[i][j]=c0;
+C[i][j+1]=c1;
+}
+
+
+}
+
 //assume that N%4==0
 void mmm_reg_blocking_4(){
 
@@ -134,7 +158,7 @@ void mmm_reg_blocking_8(){
 int i,j,k;
 float c0,c1,c2,c3,c4,c5,c6,c7,c8,a;
 
-//register blocking has been applied to j loop by a factor of 4.
+//register blocking has been applied to j loop by a factor of 8.
 for (i=0;i<N;i++)
  for (j=0;j<N;j+=8){
  c0=C[i][j];
@@ -151,10 +175,10 @@ for (i=0;i<N;i++)
  c1+=a*B[k][j+1];
  c2+=a*B[k][j+2];
  c3+=a*B[k][j+3];
- c0+=a*B[k][j+4];
- c1+=a*B[k][j+5];
- c2+=a*B[k][j+6];
- c3+=a*B[k][j+7];
+ c4+=a*B[k][j+4];
+ c5+=a*B[k][j+5];
+ c6+=a*B[k][j+6];
+ c7+=a*B[k][j+7];
 }
 C[i][j]=c0;
 C[i][j+1]=c1;
@@ -209,7 +233,7 @@ for (i=0;i<N;i++)
 }
 
 
-//this a naive implementation of loop tiling. 
+//this a naive implementation of loop tiling. Perhaps the name 'bad' is not the appropriate. 
 //more efficient loop tiling implementations are not discussed here, as this is a more advanced topic. 
 void mmm_tiling_bad(){
 

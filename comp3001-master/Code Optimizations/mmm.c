@@ -23,7 +23,7 @@
 void initialize();
 void mmm();
 void array_copying();
-void mmm_reg_blocking_2()
+void mmm_reg_blocking_2();
 void mmm_reg_blocking_4();
 void mmm_reg_blocking_8();
 void mmm_tiling_bad();

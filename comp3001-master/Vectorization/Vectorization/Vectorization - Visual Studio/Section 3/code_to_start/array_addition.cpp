@@ -5,12 +5,12 @@ __declspec(align(64)) float  X1[M], X2[M], Y1[M], test2[M];
 
 void initialization_Add() {
 
-	float e = 0.1234, p = 0.7264, r = 0.11;
+	float e = 0.1234f, p = 0.7264f, r = 0.11f;
 
 
 	for (unsigned int j = 0; j != M; j++) {
-		Y1[j] = 0.0;
-		test2[j] = 0.0;
+		Y1[j] = 0.0f;
+		test2[j] = 0.0f;
 		X1[j] = (j % 7) + r;
 		X2[j] = (j % 13) + e;
 	}

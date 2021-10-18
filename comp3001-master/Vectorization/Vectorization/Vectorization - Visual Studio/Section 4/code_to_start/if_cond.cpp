@@ -4,7 +4,7 @@ __declspec(align(64))  float array1[N_IF], array2[N_IF], testt[N_IF];
 
 void if_cond_init() {
 
-	float e = 0.1234, p = 0.7264, r = 0.11;
+	float e = 0.1234f, p = 0.7264f, r = 0.11f;
 
 	//if_cond()
 	for (int j = 0; j < N_IF; j++) {

@@ -4,7 +4,7 @@ __declspec(align(64))  float  X[M], Y[M], test1[M], A1[M][M];
 
 void MVM_init() {
 
-	float e = 0.1234, p = 0.7264, r = 0.11;
+	float e = 0.1234f, p = 0.7264f, r = 0.11f;
 
 	//MVM
 	for (unsigned int i = 0; i != M; i++)
@@ -12,8 +12,8 @@ void MVM_init() {
 			A1[i][j] = ((i - j) % 9) + p;
 
 	for (unsigned int j = 0; j != M; j++) {
-		Y[j] = 0.0;
-		test1[j] = 0.0;
+		Y[j] = 0.0f;
+		test1[j] = 0.0f;
 		X[j] = (j % 7) + r;
 	}
 }

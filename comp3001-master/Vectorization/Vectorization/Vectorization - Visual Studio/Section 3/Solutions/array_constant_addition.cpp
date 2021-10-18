@@ -4,12 +4,12 @@ __declspec(align(64))  float  V1[M], V2[M], test3[M];
 
 void initialization_ConstAdd() {
 
-	float e = 0.1234, p = 0.7264, r = 0.11;
+	float e = 0.1234f, p = 0.7264f, r = 0.11f;
 
 
 	for (unsigned int j = 0; j != M; j++) {
-		V1[j] = 0.0;
-		test3[j] = 0.0;
+		V1[j] = 0.0f;
+		test3[j] = 0.0f;
 		V2[j] = (j % 13) + e;
 	}
 }
@@ -18,7 +18,7 @@ void initialization_ConstAdd() {
 unsigned short int ConstAdd_default() {
 
 	for (int j = 0; j < M; j++) {
-		V1[j] = V2[j] + 2.1234;
+		V1[j] = V2[j] + 2.1234f;
 	}
 
 
@@ -29,7 +29,7 @@ unsigned short int ConstAdd_SSE() {
 
 	__m128 num0, num1, num2, num3, num4, num5, num6;
 
-	num1 = _mm_set_ps(2.1234, 2.1234, 2.1234, 2.1234); //set num1 values
+	num1 = _mm_set_ps(2.1234f, 2.1234f, 2.1234f, 2.1234f); //set num1 values
 
 	for (int i = 0; i < M; i += 4) { //IMPORTANT: M MUST BE A MULTIPLE OF 4, OTHERWISE IT DOES NOT WORK
 		num2 = _mm_load_ps(&V2[i]); //load 4 elements of V2[]
@@ -46,7 +46,7 @@ unsigned short int ConstAdd_AVX() {
 
 	__m256  ymm0, ymm1, ymm2, ymm3, ymm4;
 
-	ymm1 = _mm256_set_ps(2.1234, 2.1234, 2.1234, 2.1234, 2.1234, 2.1234, 2.1234, 2.1234); //set num1 values
+	ymm1 = _mm256_set_ps(2.1234f, 2.1234f, 2.1234f, 2.1234f, 2.1234f, 2.1234f, 2.1234f, 2.1234f); //set num1 values
 	for (int i = 0; i < M; i += 8) { //IMPORTANT: M MUST BE A MULTIPLE OF 8, OTHERWISE IT DOES NOT WORK
 		ymm2 = _mm256_load_ps(&V2[i]); //load 8 elements of X2[]
 		ymm3 = _mm256_add_ps(ymm1, ymm2); //num3 = num1 + num2
@@ -62,7 +62,7 @@ unsigned short int Compare_ConstAdd() {
 
 
 	for (int j = 0; j < M; j++) {
-		test3[j] = V2[j] + 2.1234;
+		test3[j] = V2[j] + 2.1234f;
 	}
 
 

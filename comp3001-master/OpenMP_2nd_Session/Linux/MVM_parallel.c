@@ -18,11 +18,11 @@
 #include <pmmintrin.h>
 #include <immintrin.h>
 
-#define N 128//array size
-#define TIMES 1 //times to run
+#define N 1024//array size
+#define TIMES 1//times to run
 #define NUM_THREADS 4 //number of threads
 
-#define EPSILON 0.1
+#define EPSILON 0.00001
 #define BILLION 1000000000L
 void init(float *y, float *a,  float *x);
 void MVM_serial(float *y, float *a,  float *x);
@@ -42,6 +42,7 @@ float test[N];
 int main () {
 int i,it;
 float *x, *y, *a; // These pointers will hold the base addresses of the memory blocks created 
+double gflops;
 
 struct timespec start, end; //for timers
 uint64_t diff;
@@ -73,14 +74,15 @@ clock_gettime(CLOCK_MONOTONIC, &start);	/* mark start time */
 
 for (it=0; it< TIMES; it++)
  //MVM_serial(y,a,x); //execute the main routine
- MVM_parallel_ver4(y,a,x); //execute the main routine
+ MVM_parallel_ver5(y,a,x); //execute the main routine
 
 clock_gettime(CLOCK_MONOTONIC, &end);	/* mark the end time */
 
 diff = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
+gflops = (double) (N*N*2) / (diff / TIMES); //ARITHMETICAL_OPS /(nanoseconds/TIMES)
 printf("elapsed time = %llu nanoseconds\n", (long long unsigned int) diff);
 printf("elapsed time = %llu mseconds\n", (long long unsigned int) diff/1000000);
-
+printf("elapsed time = %llu mseconds \n%f GigaFLOPS achieved\n", (long long unsigned int) diff/1000000, gflops);
 
 
 if (Compare_MVM(y,a,x) == 0)
@@ -152,7 +154,7 @@ unsigned short int Compare_MVM(const float *y, const float *a,  const float *x) 
 unsigned short int equal(float const a, float const b) {
 	float temp = a - b;
 	//printf("\n %f  %f", a, b);
-	if (fabs(temp) < EPSILON)
+	if (fabs(temp/b) < EPSILON)
 		return 0; //success
 	else
 		return 1;
@@ -230,6 +232,8 @@ omp_set_num_threads(NUM_THREADS);
 
 #pragma omp parallel shared(y,a,x) private(i,j) 
 {
+
+   
 __m256 ymm2, num0, num1, num2, num3, num4, num5;
 __m128 xmm1, xmm2;
 

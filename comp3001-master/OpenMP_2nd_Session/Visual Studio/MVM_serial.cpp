@@ -22,7 +22,7 @@
 #define TIMES 1 //times to run
 #define NUM_THREADS 4 //number of threads
 
-#define EPSILON 0.1
+#define EPSILON 0.00001
 #define BILLION 1000000000L
 void init(float *y, float *a, float *x);
 void MVM_serial(float *y, float *a, float *x);
@@ -149,7 +149,7 @@ unsigned short int Compare_MVM(const float *y, const float *a, const float *x) {
 unsigned short int equal(float const a, float const b) {
 	float temp = a - b;
 	//printf("\n %f  %f", a, b);
-	if (fabs(temp) < EPSILON)
+	if (fabs(temp/b) < EPSILON)
 		return 0; //success
 	else
 		return 1;

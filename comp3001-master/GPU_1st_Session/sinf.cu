@@ -24,8 +24,9 @@ __global__ void sin_parallel(const float* in, float* out); //CUDA kernel - this 
 
 int main(){
 
-    float* input, * output;
-    float* d_input, * d_output;
+   //the arrays are allocated dynamically in this case. They can also be allocated statically (we will see that next week)
+    float* input, * output;//these are the host arrays
+    float* d_input, * d_output;//these are the device arrays
 
     cudaError_t cudaStatus;
 
@@ -43,49 +44,50 @@ int main(){
         return -1;
     }
 
+    //initialize the host arrays
     initialization(input, output);
 
-    cudaStatus=cudaMalloc(&d_input, N * sizeof(float));//dynamically allocate memory in GPU using cudamalloc
+    cudaStatus=cudaMalloc(&d_input, N * sizeof(float));//dynamically allocate memory in GPU by using cudamalloc
     if (cudaStatus != cudaSuccess) {//if the GPU memory asked is not available 
         printf("\ncudaMalloc failed!");
-        free(input); free(output);
-        return -1;
+        free(input); free(output); //free the already allocated arrays
+        return -1; //end the process
     }
 
-    cudaStatus=cudaMalloc(&d_output, N * sizeof(float));//dynamically allocate memory in GPU using cudamalloc
+    cudaStatus=cudaMalloc(&d_output, N * sizeof(float));//dynamically allocate memory in GPU by using cudamalloc
     if (cudaStatus != cudaSuccess) {//if the GPU memory asked is not available 
         printf("\ncudaMalloc failed!");
-        free(input); free(output); cudaFree(d_input);
-        return -1;
+        free(input); free(output); cudaFree(d_input); //free the already allocated arrays
+        return -1;//end the process
     }
 
   
 
-    cudaStatus=cudaMemcpy(d_input, input, N * sizeof(float), cudaMemcpyHostToDevice);
-    if (cudaStatus != cudaSuccess) {
+    cudaStatus=cudaMemcpy(d_input, input, N * sizeof(float), cudaMemcpyHostToDevice);//copy data from the host array to the device array
+    if (cudaStatus != cudaSuccess) {//if the array cannot be copied
         printf("\ncudaMemcpy failed!");
-        free(input); free(output); cudaFree(d_input); cudaFree(d_output);
-        return -1;
+        free(input); free(output); cudaFree(d_input); cudaFree(d_output); //free the already allocated arrays
+        return -1;//end the process
     }
 
     dim3 dimGrid(10, 1, 1);//1d grid consists of 10 blocks. x dim is the first (x, y, z )
     dim3 dimBlock(10, 1, 1); //1d blocks consisting of 10 threads. x dim is the first (x, y, z )
     
-    sin_parallel << <dimGrid, dimBlock >> > (d_input, d_output); 
+    sin_parallel << <dimGrid, dimBlock >> > (d_input, d_output); //launch the kernel
 
-    cudaError_t error = cudaGetLastError(); //get the status of the last cuda function that was called
-    if (error != cudaSuccess) //if the hello() function did not run appropriately 
+    cudaError_t error = cudaGetLastError(); //get the status of the last cuda kernel that was called (in this case this is the sin_parallel)
+    if (error != cudaSuccess) //if the sin_parallel() function did not run sucessfully
         printf("\nError %s\n",cudaGetErrorString(error)); //use this function to show the description of the error
 
-    cudaStatus=cudaMemcpy(output, d_output, N * sizeof(float), cudaMemcpyDeviceToHost);
-    if (cudaStatus != cudaSuccess) {
+    cudaStatus=cudaMemcpy(output, d_output, N * sizeof(float), cudaMemcpyDeviceToHost);//copy data from the device array to host array
+    if (cudaStatus != cudaSuccess) {//if the array cannot be copied
         printf("\ncudaMemcpy failed!");
         free(input); free(output); cudaFree(d_input); cudaFree(d_output);
         return -1;
     }
 
     
-
+    //compare the output of sin_parallel to verify that the CUDA kernel works fine
     compare(input, output);
 
     // cudaDeviceReset must be called before exiting in order for profiling and
@@ -112,7 +114,7 @@ int main(){
     cudaFree(d_input);//free the memory allocated dynamically in the GPU
     cudaFree(d_output);//free the memory allocated dynamically in the GPU
 
-    return 0;
+    return 0; //exit sucessfully
 }
 
 
@@ -120,8 +122,8 @@ void initialization(float* in, float* out) {
 
     int i;
     for (i = 0; i < N; i++) {
-        in[i] = (float)(rand() / 7.1);
-        out[i] = 0.0;
+        in[i] = (float)(rand() / 7.1f);
+        out[i] = 0.0f;
     }
 
 }
@@ -150,7 +152,7 @@ int compare(const float* in, float* out) {
 
     int i;
     for (i = 0; i < N; i++) {
-        if (fabs(out[i] - sinf(in[i])) > 0.001) {
+        if ( fabs((out[i] - sinf(in[i])) / out[i]) > 0.00001 ) {
             printf("\n\wrong results %f - %f\n", out[i], sinf(in[i]));
             return -1;
         }
@@ -169,3 +171,4 @@ __global__ void sin_parallel(const float* in, float* out) {
     }
     
 }
+

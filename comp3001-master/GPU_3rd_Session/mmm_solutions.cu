@@ -14,7 +14,7 @@
 #include <math.h>
 #include <omp.h>
 
-#define TIMES_TO_RUN 10 //how many times the function will run
+#define TIMES_TO_RUN 1 //how many times the function will run
 
 #define N 1024 //input size - USE POWER OF 2 ONLY 
 #define CHECK_OUTPUT   //if do not want to validate the results comment this 
@@ -324,7 +324,7 @@ int main()
 
 	cudaEventRecord(start, 0); //get timer value
 
-	for (int it = 0; it < TIMES_TO_RUN; it++) {
+	for (int it = 0; it < TIMES_TO_RUN; it++) { //in CUDA you do not have to run the program many times to get an accurate ex.time. However, the first time you run a kernel it normally takes more. So you need to include one - two extra runs (this is also known as warm up time). The CUDA timers have an accuracy of 1 msec.
 
 		//dim3 dimBlock(TILE, TILE, 1);
 		//dim3 dimGrid((N + TILE - 1) / TILE, (N + TILE - 1) / TILE, 1);
@@ -332,6 +332,7 @@ int main()
 		//mmm_tiled << <dimGrid, dimBlock >> > (C_d, A_d, B_d);
 		//mmm_sw_pipeline <<< dimGrid, dimBlock >>> (C_d, A_d, B_d);
 
+		//for mmm_tiled_regblocking_factor2() use the following parameters
 		dim3 dimBlock(TILE, TILE, 1);
 		dim3 dimGrid((N + TILE_x2 - 1) / (TILE_x2), (N + TILE_x2 - 1) / (TILE_x2), 1);
 		mmm_tiled_regblocking_factor2 << <dimGrid, dimBlock >> > (C_d, A_d, B_d);

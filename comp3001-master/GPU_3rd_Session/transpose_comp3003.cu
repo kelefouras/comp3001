@@ -141,7 +141,8 @@ int main(int argc, char* argv[])
 		//dim3 dimGrid((N + TILE - 1) / TILE, (N + TILE - 1) / TILE, 1);
 
 	cudaEventRecord(start, 0);
-
+	
+//in CUDA you do not have to run the program many times to get an accurate ex.time. However, the first time you run a kernel it normally takes more. So you need to include one - two extra runs (this is also known as warm up time). The CUDA timers have an accuracy of 1 msec.
 	for (int it = 0; it < TIMES_TO_RUN; it++) {
 		//normal_copy << <dimGrid, dimBlock >> > ();
 		transpose_ver5 << <dimGrid, dimBlock >> > ();
@@ -205,7 +206,7 @@ int compare() {
 	int i, j;
 	for (i = 0; i < N; i++)
 		for (j = 0; j < N; j++) {
-			if (fabs( (A[i][j] - Atranspose[j][i])/A[i][j]) > 0.00001) {
+			if (fabs( (A[i][j] - Atranspose[j][i]) / A[i][j]) > 0.00001) {
 				printf("\n\wrong results at (%d, %d); they are (%f, %f)\n", i, j,A[i][j],Atranspose[j][i]);
 				return -1;
 			}
@@ -213,3 +214,4 @@ int compare() {
 	printf("\nResults are correct\n");
 	return 0;
 }
+

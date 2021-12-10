@@ -18,7 +18,7 @@
 #define N 256 //input size
 
 
-__declspec(align(64)) float test[N][N][N], sum[N][N][N], A[N][N][N], C[N][N]; 
+__declspec(align(32)) float test[N][N][N], sum[N][N][N], A[N][N][N], C[N][N]; 
 
 __device__ float device_sum[N][N][N], device_A[N][N][N], device_C[N][N]; //allocate the device arrays statically (global GPU memory)
 
@@ -36,6 +36,13 @@ inline unsigned short int equal(float const a, float const b);
 __global__ void diotgen_ver1() {
 
 //write your code here
+/*
+	for (int r = 0; r < N; r++)
+		for (int q = 0; q < N; q++)
+			for (int p = 0; p < N; p++)
+				for (int s = 0; s < N; s++)
+					sum[r][q][p] = sum[r][q][p] + A[r][q][s] * C[s][p];
+*/
 
 }
 

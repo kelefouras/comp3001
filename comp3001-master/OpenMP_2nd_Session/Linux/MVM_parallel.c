@@ -211,7 +211,7 @@ float tmp;
 
 omp_set_num_threads(NUM_THREADS);
 
-#pragma omp parallel for shared(y,a,x) private(i,j,tmp) schedule(static) 
+#pragma omp parallel for shared(y,a,x) private(i,j) schedule(static) 
 for (i=0; i<N; i++) {
 tmp=y[i];
 #pragma omp simd aligned(y,x,a:64) reduction(+:tmp)

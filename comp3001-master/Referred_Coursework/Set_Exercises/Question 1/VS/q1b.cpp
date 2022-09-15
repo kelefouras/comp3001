@@ -28,8 +28,7 @@ __declspec(align(64)) float A[N][N], Atr[N * N] ;
 int main() {
 
 
-    int i, j, count = 0;
-
+int i, j, count = 0;
 
 
     //the following command pins the current process to the 1st core

@@ -6,7 +6,7 @@
 */
 
 //COMPILE WITH
-//gcc mvm_default.c -o p -O3 -march=native  -D_GNU_SOURCE -g
+//gcc q1b.c -o p -O3 -march=native  -D_GNU_SOURCE -g
  
 #include <stdio.h>
 #include <math.h>
@@ -43,7 +43,6 @@ int i,it,ii,j,j0,i3,j3,temp,times,count=0;
 int tem,iii,jj,jjj,k,c;
 
 
-
 time_t start1, end1;
 struct timeval start2, end2;
 
@@ -75,9 +74,9 @@ gettimeofday(&start2, NULL);
 
 //-------------------main kernel ---------------------------
 for (int it=0;it<TIMES;it++)
-for (i=0;i<N;i++)
-for (j=0;j<N;j++)
-Y[i]+=A[i][j]*X[j];
+ for (i=0;i<N;i++)
+  for (j=0;j<N;j++)
+   Y[i] += A[i][j] * X[j];
 
 
 

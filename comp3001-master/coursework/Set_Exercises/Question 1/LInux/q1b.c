@@ -6,7 +6,7 @@
 */
 
 //COMPILE WITH
-//gcc mvm_default.c -o p -O3 -march=native  -D_GNU_SOURCE -g
+//gcc q1b.c -o p -O3 -march=native  -D_GNU_SOURCE -g
  
 #include <stdio.h>
 #include <math.h>
@@ -41,7 +41,7 @@ int main(){
 
 int i,it,ii,j,j0,i3,j3,temp,times,count=0;
 int tem,iii,jj,jjj,k,c;
-
+float alpha = 0.376f;
 
 
 time_t start1, end1;
@@ -75,9 +75,9 @@ gettimeofday(&start2, NULL);
 
 //-------------------main kernel ---------------------------
 for (int it=0;it<TIMES;it++)
-for (i=0;i<N;i++)
-for (j=0;j<N;j++)
-Y[i]+=A[i][j]*X[j];
+ for (i=0;i<N;i++)
+  for (j=0;j<N;j++)
+   Y[i] += alpha * A[i][j] * X[j];
 
 
 

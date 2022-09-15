@@ -28,8 +28,8 @@ __declspec(align(64)) float A[N][N], Atr[N * N] ;
 int main() {
 
 
-    int i, j, count = 0;
-
+int i, j, count = 0;
+float alpha = 0.376f;
 
 
     //the following command pins the current process to the 1st core
@@ -63,7 +63,7 @@ int main() {
     for (int it = 0; it < TIMES; it++)
         for (i = 0; i < N; i++)
             for (j = 0; j < N; j++)
-                Y[i] += A[i][j] * X[j];
+                Y[i] += alpha * A[i][j] * X[j];
 
 
 

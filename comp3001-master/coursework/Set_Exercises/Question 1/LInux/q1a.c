@@ -7,7 +7,7 @@
 
 //This is naive program that measures the maximum FLOPS achieved in a PC
 
-//compile with gcc flops.c -o p -O2 -D_GNU_SOURCE  -march=native -mavx -lm -D_GNU_SOURCE
+//compile with gcc q1a.c -o p -O2 -D_GNU_SOURCE  -march=native -mavx -lm -D_GNU_SOURCE
 
 #include <math.h>
 #include <stdio.h>
@@ -26,7 +26,7 @@
 #define BILLION 1000000000L
 
 #define N 4096*16 //arrays input size
-#define TIMES 100000 //times to run
+#define TIMES 1000000 //times to run
 #define TILE 20 //tile size
 #define ARITHMETICAL_OPS N*16
 
@@ -107,14 +107,14 @@ const8 = _mm256_set_ps(0.98,0.43,0.43,0.77,-0.94,-0.12,-0.71,-0.61);
 for (i=0;i<N;i+=8){
 a = _mm256_load_ps(&A[i]);
 tmp = _mm256_setzero_ps();
-tmp += _mm256_mul_ps(a, const1);
-tmp += _mm256_mul_ps(a, const2);
-tmp += _mm256_mul_ps(a, const3);
-tmp += _mm256_mul_ps(a, const4);
-tmp += _mm256_mul_ps(a, const5);
-tmp += _mm256_mul_ps(a, const6);
-tmp += _mm256_mul_ps(a, const7);
-tmp += _mm256_mul_ps(a, const8);
+tmp = _mm256_fmadd_ps(a, const1, tmp);
+tmp = _mm256_fmadd_ps(a, const2, tmp);
+tmp = _mm256_fmadd_ps(a, const3, tmp);
+tmp = _mm256_fmadd_ps(a, const4, tmp);
+tmp = _mm256_fmadd_ps(a, const5, tmp);
+tmp = _mm256_fmadd_ps(a, const6, tmp);
+tmp = _mm256_fmadd_ps(a, const7, tmp);
+tmp = _mm256_fmadd_ps(a, const8, tmp);
 _mm256_store_ps(&A[i], tmp);
 //printf("\n%f %f %f %f %f %f %f %f\n",A[i],A[i+1],A[i+2],A[i+3],A[i+4],A[i+5],A[i+6],A[i+7]);
 }

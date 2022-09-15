@@ -5,7 +5,7 @@
 ------------------UNIVERSITY OF PLYMOUTH, SCHOOL OF ENGINEERING, COMPUTING AND MATHEMATICS---
 */
 
-//compile with gcc gemver.c -o p -O3 -D_GNU_SOURCE  -march=native -mavx -lm -D_GNU_SOURCE
+//compile with gcc q2.c -o p -O3 -D_GNU_SOURCE  -march=native -mavx -lm -D_GNU_SOURCE
 
 #include <stdio.h>
 #include <stdint.h>	/* for uint64 definition */
@@ -131,20 +131,20 @@ unsigned int i,j;
 
   for (i = 0; i < N; i++)
     for (j = 0; j < N; j++)
-      A[i][j] = A[i][j] + u1[i] * v1[j] + u2[i] * v2[j];
+      A[i][j] += alpha * u1[i] * v1[j] + u2[i] * v2[j];
 
 
   for (i = 0; i < N; i++)
     for (j = 0; j < N; j++)
-      x[i] = x[i] + beta * A[j][i] * y[j];
+      x[i] += A[j][i] * y[j] + beta;
 
   for (i = 0; i < N; i++)
-    x[i] = x[i] + z[i];
+    x[i] += 3.22f * z[i];
 
 
   for (i = 0; i < N; i++)
     for (j = 0; j < N; j++)
-      w[i] = w[i] +  alpha * A[i][j] * x[j];
+      w[i] += alpha * A[i][j] * x[j] + beta;
 
 
 }
@@ -159,22 +159,20 @@ initialize_again();
 
   for (i = 0; i < N; i++)
     for (j = 0; j < N; j++)
-      A[i][j] = A[i][j] + u1[i] * v1[j] + u2[i] * v2[j];
+      A[i][j] += alpha * u1[i] * v1[j] + u2[i] * v2[j];
 
 
   for (i = 0; i < N; i++)
     for (j = 0; j < N; j++)
-      x[i] = x[i] + beta * A[j][i] * y[j];
+      x[i] += A[j][i] * y[j] + beta;
 
   for (i = 0; i < N; i++)
-    x[i] = x[i] + z[i];
+    x[i] += 3.22f * z[i];
 
 
-  for (i = 0; i < N; i++){
-    for (j = 0; j < N; j++){
-     test[i]= test[i] + alpha * A[i][j] * x[j];
-     } }
-
+  for (i = 0; i < N; i++)
+    for (j = 0; j < N; j++)
+      test[i] += alpha * A[i][j] * x[j] + beta;
 
 
     for (j = 0; j < N; j++){

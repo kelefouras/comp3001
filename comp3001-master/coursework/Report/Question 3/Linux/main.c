@@ -146,7 +146,7 @@ unsigned short int equal(float const a, float const b) {
 void read_layer_dimensions(){
 
 
-    Input_Output_batch_dim=10;
+    Input_Output_batch_dim=20;
     Input_Y_dim=54;
     Input_X_dim=54;
     Input_depth_dim=256;
@@ -225,10 +225,7 @@ int load_create_input_output_array_FP(){
                     in_subscript = (unsigned long long int) b * (Input_Y_dim * Input_X_dim * Input_depth_dim)
                                    + (y ) * Input_X_dim * Input_depth_dim
                                    + (x ) * Input_depth_dim +d;
-                    if (in_subscript>=input_size){
-                        printf("\nhey %llu %llu - %d %d %d %d",in_subscript,input_size,b,y,x,d);
-                        exit(1);
-                    }
+
                     in_FP[in_subscript] =  ( (float) (d % 50) ) + 0.73f;
                     //in_FP[in_subscript] = ((float) (rand() % 50) ) +0.73f;
                     // printf("  %d",*(in+i));

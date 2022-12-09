@@ -18,7 +18,7 @@ int unoptimized_layer_FP(const float * in_FP, const float * filter_FP, const flo
     float temp,bias;
 
 
-    for (unsigned int b = 0; b < Input_Output_batch_dim; b++) { //assume batch=1, needs to be fixed
+    for (unsigned int b = 0; b < Input_Output_batch_dim; b++) { 
         for(unsigned int m = 0; m < Output_depth_dim; m++){
             for (unsigned int od = 0; od < 1; od++) {	//Output Depth , for 3D convolution only
                 for (unsigned int y = 0; y < Output_Y_dim; y++) {			//Output height

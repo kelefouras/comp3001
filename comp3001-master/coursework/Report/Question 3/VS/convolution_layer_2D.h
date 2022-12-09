@@ -28,10 +28,6 @@
 #include <pmmintrin.h>
 #include <immintrin.h>
 #include <stdint.h>	/* for uint64 definition */
-#include <sched.h>
-#include <pthread.h>
-#include <sys/syscall.h>
-#include <sys/mman.h>
 #include <omp.h>
 
 
@@ -39,7 +35,7 @@
 
 float Relu_float(const float temp);
 
-int unoptimized_layer_FP(const float * in, const float * filter, const float *bias_array, float * out_to_compare_with);
+int unoptimized_layer_FP(const float* in, const float* filter, const float* bias_array, float* out_to_compare_with);
 
 
 

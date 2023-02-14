@@ -9,8 +9,8 @@
 #include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#define N 1000000
+#include <math.h>
+#define N 100000000
 
 float a[N], b[N], c[N], d[N];
 
@@ -28,41 +28,46 @@ for (i=0; i<N; i++) {
 
 int main ( ) {
 
-int i, nthreads, tid;
+int i,j, nthreads, tid;
 
 initialize();
 
-#pragma omp parallel shared(a,b,c,d,nthreads) private(i,tid) 
+omp_set_dynamic(0);
+omp_set_nested(1);
+//omp_set_num_threads(3);
+#pragma omp parallel shared(a,b,c,d,nthreads) private(tid) num_threads(2)
   {
   tid = omp_get_thread_num();
   #pragma omp master
     {
     nthreads = omp_get_num_threads();
-    printf("Number of threads = %d\n", nthreads);
+    printf("Number of threads at first parallel region = %d\n", nthreads);
     }
   printf("Thread %d starting...\n",tid);
 
-  #pragma omp sections nowait
+  #pragma omp sections 
     {
     #pragma omp section
       {
       printf("Thread %d doing section 1\n",tid);
-      #pragma omp simd	
+      #pragma omp parallel for simd schedule(static) private(i) num_threads(2) 
+      for (j=0; j<1000; j++)
       for (i=0; i<N; i++)
         {
-        c[i] = a[i] + b[i];
-       // printf("Thread %d: c[%d]= %f\n",tid,i,c[i]);
+        c[i] += (a[i] + b[i])/0.21f + sqrt(i)*0.033f;
+        //printf("Thread %d: c[%d]= %f\n",omp_get_thread_num(),i,c[i]);
         }
       }
 
     #pragma omp section
       {
       printf("Thread %d doing section 2\n",tid);
-      #pragma omp simd	
-      for (i=0; i<N; i++)
+      #pragma omp parallel for simd schedule(static) private(i) num_threads(2)	
+       for (j=0; j<1000; j++)
+       for (i=0; i<N; i++)
         {
-        d[i] = a[i] * b[i];
-        //printf("Thread %d: d[%d]= %f\n",tid,i,d[i]);
+        d[i] += (a[i] * b[i])/0.23f + sqrt(i)*0.023f;
+        //printf("Thread %d: d[%d]= %f\n",omp_get_thread_num(),i,d[i]);
         }
       }
 

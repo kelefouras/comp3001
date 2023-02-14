@@ -17,7 +17,7 @@ How to use gprof profiler:
 
 #include <stdio.h> //library for fprintf() and fopen()
 
-#define N 1000  //arrays input size
+#define N 2000  //arrays input size
 
 //In C, all the routines must be declared
 void initialize();

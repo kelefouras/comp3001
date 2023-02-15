@@ -55,12 +55,13 @@ int main() {
 	for (int t = 0; t < TIMES_TO_RUN; t++) {
 
 		//output=MVM_default();
-		output=MVM_SSE();
+		//output=MVM_SSE();
 		//output=MVM_AVX();
 
 		//output=MMM_default();
 		//output=MMM_SSE();
 		//output=MMM_AVX();
+		output=MMM_AVX_reg_blocking();
 
 		//output=if_cond_default();
 		//output = if_cond_SSE();

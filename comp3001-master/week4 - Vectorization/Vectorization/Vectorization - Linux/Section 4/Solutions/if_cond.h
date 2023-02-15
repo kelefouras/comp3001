@@ -17,7 +17,7 @@
 
 //MVM initialization 
 #define N_IF 512
-
+//#define EPSILON_IF 0.0001
 
 void if_cond_init();
 unsigned short int if_cond_default();
@@ -28,6 +28,6 @@ unsigned short int Compare_if_cond();
 
 extern unsigned short int equal(float const a, float const b); //used extern as this is defined in MVM.h
 
-#define EPSILON 0.01
+
 
 

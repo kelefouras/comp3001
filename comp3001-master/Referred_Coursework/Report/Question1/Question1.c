@@ -58,7 +58,7 @@ int main ( ) {
 
 void routine1(long long int num_trials){
 
-   long long int i;  long long int acc = 0;
+   long long int i;  long long int acc = 0,no=0;
    double pi, x, y, test;
    double r = 1.0;   // radius of circle. Side of squrare is 2*r 
 
@@ -71,14 +71,18 @@ void routine1(long long int num_trials){
 
       test = x*x + y*y;
 
-      if (test <= r*r) 
+      if (test <= r*r) {
        acc=acc+1;
+       }
+       else {
+       no++;
+       }
        
     }
 
     pi = 4.0 * ((double) acc / (double)num_trials);
 
-    printf("\n Routine 1 : after %lld trials, pi is %lf \n",num_trials, pi);
+    printf("\n Routine 1 : after %lld trials, pi is %lf - no is %lld\n",num_trials, pi, no);
 
 }
 
@@ -128,7 +132,7 @@ double x;
 
 for (i=0;i<N;i++){
  for(j=0;j<N;j++){
-  x=(double) (i%99) * (j%87) + 0.043;
+  x=(double) (i%77) * (j%83) + 0.024;
   A[i][j]=sqrt(x);
   }
   }
@@ -163,6 +167,13 @@ for (i=0;i<N;i++){
   
     error_norm = sqrt ( error_norm );
   u_true_norm = sqrt ( u_true_norm );
+  
+  
+  for (i=0;i<N;i++){
+   for(j=0;j<N;j++){
+    A[i][j]-=x;
+  }
+  }
   
   printf("\n Routine2 : output is %e, %e and %e\n",u_norm,error_norm,u_true_norm);
   

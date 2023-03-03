@@ -83,7 +83,7 @@ unsigned int    i,j;
 //initialization
 for (i=0;i<N;i++)
 for (j=0;j<N;j++){
-A[i][j]= 1.1;
+A[i][j]= (i%21)+(j%32)-0.012f;
 
 }
 
@@ -107,7 +107,7 @@ unsigned int    i,j;
 //initialization
 for (i=0;i<N;i++)
 for (j=0;j<N;j++){
-A[i][j]= 1.1;
+A[i][j]= (i%21)+(j%32)-0.012f;
 
 }
 

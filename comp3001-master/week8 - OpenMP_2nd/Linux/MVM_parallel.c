@@ -18,8 +18,8 @@
 #include <pmmintrin.h>
 #include <immintrin.h>
 
-#define N 1024//array size
-#define TIMES 1//times to run
+#define N 4096//array size
+#define TIMES 10//times to run
 #define NUM_THREADS 4 //number of threads
 
 #define EPSILON 0.00001

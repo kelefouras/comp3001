@@ -88,8 +88,8 @@ double version1(){
    
 double step;
 
-int i, nthreads;   
-double x, pi=0.0, sum[NUM_THREADS];
+int j, nthreads;   
+double pi=0.0, sum[NUM_THREADS];
 
 step=1.0/(double) num_steps;
 omp_set_num_threads(NUM_THREADS);
@@ -109,8 +109,8 @@ omp_set_num_threads(NUM_THREADS);
 }
 
 //after this point I have lost the local variables. So, for the sum to be visible, I must promote sum to an array.
-for (i=0, pi=0.0; i<nthreads; i++)
-  pi+=sum[i] * step;
+for (j=0, pi=0.0; j<nthreads; j++)
+  pi+=sum[j] * step;
 
 
 return pi;
@@ -122,8 +122,8 @@ double version2(){
    
 double step;
 
-int i, nthreads;   
-double x, pi=0.0, sum[NUM_THREADS][PAD];
+int j, nthreads;   
+double pi=0.0, sum[NUM_THREADS][PAD];
 
 step=1.0/(double) num_steps;
 omp_set_num_threads(NUM_THREADS);
@@ -143,8 +143,8 @@ omp_set_num_threads(NUM_THREADS);
 }
 
 //after this point I have lost the local variables. So, for the sum to be visible, I promote sum to an array.
-for (i=0, pi=0.0; i<nthreads; i++)
-  pi+=sum[i][0] * step;
+for (j=0, pi=0.0; j<nthreads; j++)
+  pi+=sum[j][0] * step;
 
 
 return pi;
@@ -157,8 +157,8 @@ double version3(){
    
 double step;
 
-int i, nthreads;   
-double x, pi=0.0;
+int nthreads;   
+double pi=0.0;
 
 step=1.0/(double) num_steps;
 omp_set_num_threads(NUM_THREADS);
@@ -194,8 +194,8 @@ double version4(){
    
 double step;
 
-int i, nthreads;   
-double x, pi=0.0;
+int nthreads;   
+double pi=0.0;
 
 step=1.0/(double) num_steps;
 omp_set_num_threads(NUM_THREADS);

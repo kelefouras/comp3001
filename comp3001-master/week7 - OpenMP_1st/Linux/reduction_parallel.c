@@ -34,13 +34,13 @@ bool compare();
 
 int main(){
   
-time_t start1, end1;
+double start_1, end_1; 
 struct timeval start2, end2;
 double pi1,pi2;
 
 init();
 
-start1 = clock();
+start_1 = omp_get_wtime(); //start the timer 
 gettimeofday(&start2, NULL);
 
 for (int i=0; i<1; i++){
@@ -51,9 +51,9 @@ for (int i=0; i<1; i++){
 
 }
 
-end1 = clock();
+end_1 = omp_get_wtime(); //start the timer 
 gettimeofday(&end2, NULL);
-printf(" clock() method: %ldms\n", (end1 - start1) / (CLOCKS_PER_SEC/1000));
+printf(" Time in seconds is %f\n", end_1 - start_1 );//print the ex.time
 printf(" gettimeofday() method: %ldms\n", (end2.tv_sec - start2.tv_sec) *1000 + (end2.tv_usec - start2.tv_usec)/1000);
 
 

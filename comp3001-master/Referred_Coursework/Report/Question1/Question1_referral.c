@@ -1,4 +1,9 @@
-//-------------------- COMP3001 OPENMP COURSEWORK - Report Part1 -----------------------------
+/*
+------------------DR VASILIOS KELEFOURAS-----------------------------------------------------
+------------------COMP3001 ------------------------------------------------------------------
+------------------PARALLEL PROGAMMING MODULE-------------------------------------------------
+------------------UNIVERSITY OF PLYMOUTH, SCHOOL OF ENGINEERING, COMPUTING AND MATHEMATICS---
+*/
 //compile with gcc Question1.c -o p -O3 -lm -Wall -fopenmp
 
 # include <stdlib.h>
@@ -29,6 +34,7 @@ unsigned long long pseed[MAX_THREADS][4]; //[4] to padd to cache line
 unsigned long long random_last = 0;
 #pragma omp threadprivate(random_last)
 
+
 int main ( ) {
 
   double wtime;
@@ -57,37 +63,39 @@ int main ( ) {
 
 void routine1(long long int num_trials){
 
-   long long int i;  long long int Ncirc = 0;
+   long long int i;  long long int acc = 0,no=0;
    double pi, x, y, test;
    double r = 1.0;   // radius of circle. Side of squrare is 2*r 
 
-
-   
 //START THE PARALLEL REGION
 
-   seed(-r, r);  // generate the seed
+   seed(-r, r);  // The circle and square are centered at the origin
    
-//PARALLELIZE THIS LOOP
+   //PARALLELIZE THIS LOOP
    for(i=0;i<num_trials; i++)
    {
-
-      x = drandom(); //generate a random value
-      y = drandom(); //generate a random value
+      x = drandom(); //generates a random value; this is different every time
+      y = drandom(); //generates a random value; this is different every time
 
       test = x*x + y*y;
 
-      if (test <= r*r) 
-       Ncirc++;
+      if (test <= r*r) {
+       acc=acc+1;
+       }
+       else {
+       no++;
+       }
+       
     }
 
 //END THE PARALLEL REGION
 
-    pi = 4.0 * ((double)Ncirc/(double)num_trials);
+    pi = 4.0 * ((double) acc / (double)num_trials);
 
-    //THE PI VALUE OF THE PARALLEL VERSION MIGHT BE SLIGHTLY DIFFERENT (THE 4TH, 5TH, 6TH DIGITS AFTER THE RADIX POINT MIGHT BE DIFFERENT); THIS IS BECAUSE DIFFERENT RANDOM VALUES ARE GENERATED IN x,y VARIABLES. 
-    printf("\n Routine 1 : after %lld trials, pi is %lf \n",num_trials, pi);
+    printf("\n Routine 1 : after %lld trials, pi is %lf - no is %lld\n",num_trials, pi, no);
 
 }
+
 
 //DO NOT AMEND THIS ROUTINE
 double drandom()
@@ -150,7 +158,6 @@ void seed(double low_in, double hi_in)
    random_last = (unsigned long long) pseed[id][0];
 }
 
-
 //PARALLELIZE AND VECTORIZE THIS ROUTINE USING OPENMP
 void initialize(){
 
@@ -159,7 +166,7 @@ double x;
 
 for (i=0;i<N;i++){
  for(j=0;j<N;j++){
-  x=(double) (i%99) * (j%87) + 0.043;
+  x=(double) (i%77) * (j%83) + 0.024;
   A[i][j]=sqrt(x);
   }
   }
@@ -176,25 +183,32 @@ unsigned int i,j;
 
 for (i=0;i<N;i++){
  for(j=0;j<N;j++){
-      u_norm = u_norm + A[i][j]*A[i][j];
+      u_norm += A[i][j]*A[i][j];
     }
   }
   
   u_norm = sqrt ( u_norm );
   
-  
+
 for (i=0;i<N;i++){
  for(j=0;j<N;j++){
       x = ( double ) ( 2 * i - N + 1 ) / ( double ) ( N - 1 );
       y = ( double ) ( 2 * j - N + 1 ) / ( double ) ( N - 1 );
       u_true = u_exact ( x, y );
-      error_norm = error_norm + sqrt( ( A[i][j] - u_true ) * ( A[i][j] - u_true ) );
-      u_true_norm = u_true_norm + u_true * u_true;
+      error_norm += sqrt( ( A[i][j] - u_true ) * ( A[i][j] - u_true ) );
+      u_true_norm += u_true * u_true;
     }
   }
   
     error_norm = sqrt ( error_norm );
   u_true_norm = sqrt ( u_true_norm );
+  
+  
+  for (i=0;i<N;i++){
+   for(j=0;j<N;j++){
+    A[i][j]-=x;
+  }
+  }
   
   printf("\n Routine2 : output is %e, %e and %e\n",u_norm,error_norm,u_true_norm);
   

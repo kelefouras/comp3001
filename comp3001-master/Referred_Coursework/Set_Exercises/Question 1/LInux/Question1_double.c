@@ -24,7 +24,7 @@
 
 
 
-#define N 16384 //arrays input size
+#define N 8192 //arrays input size
 #define TIMES 1 //times to run
 
 

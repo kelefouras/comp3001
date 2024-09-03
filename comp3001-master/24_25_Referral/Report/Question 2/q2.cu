@@ -12,6 +12,7 @@ for (i=0; i<N; i++)
 }
 
 
+//implementation #2
 //multi-threading + vectorization using OpenMP
 //float y[N], x[N], a[N*N]
 void MVM_ver2(){
@@ -32,6 +33,7 @@ y[i]=tmp;
 }
 
 
+//implementation #3
 //TILE=32
 // dim3 dimBlock(TILE, 1);
 // dim3 dimGrid(N / TILE, 1, 1);

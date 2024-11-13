@@ -152,9 +152,9 @@ void q3() {
 
 	for (int r = 0; r < N; r++)
 		for (int q = 0; q < N; q++)
+		   for (int s = 0; s < N; s++)
 			for (int p = 0; p < N; p++)
-				for (int s = 0; s < N; s++)
-					test[r][q][p] = test[r][q][p] + A[r][q][s] * C[s][p];
+					test[r][q][p] += A[r][q][s] * C[s][p];
 
 
 }

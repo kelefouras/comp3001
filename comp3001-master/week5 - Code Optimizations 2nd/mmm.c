@@ -10,7 +10,7 @@
 #include <stdio.h> //library for printf() 
 #include <time.h>	/* for clock_gettime */
 #include <stdint.h>	/* for uint64 definition */
-#include <pthread.h> // for cpu_set_t 
+#include <omp.h>
 
 #define BILLION 1000000000L
 
@@ -35,23 +35,25 @@ float A[N][N], B[N][N], C[N][N], Btranspose[N][N];
 int main( ) {
 
 
-struct timespec start, end; //timers
-uint64_t diff;
+
+double diff;
 double gflops;
+double start, end;
 
 //the following code binds this thread to code number 0. Without this code, the OS will tongle the thread among the cores, to reduce heat dissipation
+/*
 cpu_set_t mask;
 CPU_ZERO(&mask);
 CPU_SET(0,&mask);
 if(sched_setaffinity(0,sizeof(mask),&mask) == -1)
    printf("WARNING: Could not set CPU Affinity, continuing...\n");
-
+*/
 
 initialize();
 //mmm_array_copying();
 
-/* measure monotonic time */
-clock_gettime(CLOCK_MONOTONIC, &start);	/* mark start time */
+
+start=omp_get_wtime();	
 
 for (int t=0;t<TIMES;t++)
 //mmm();
@@ -59,12 +61,13 @@ mmm_reg_blocking_8();
 //mmm_tiling_bad();
 
 
-clock_gettime(CLOCK_MONOTONIC, &end);	/* mark the end time */
+end=omp_get_wtime();
+printf("\ntime elapsed is %f secs\n",end-start);
 
-diff = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
-gflops = (double) ARITHMETICAL_OPS / (diff / TIMES); //ARITHMETICAL_OPS /(nanoseconds/TIMES)
-printf("elapsed time = %llu nanoseconds\n", (long long unsigned int) diff);
-printf("elapsed time = %llu mseconds \n%f GigaFLOPS achieved\n", (long long unsigned int) diff/1000000, gflops);
+
+diff = end - start;
+gflops = (double) ARITHMETICAL_OPS / (diff / TIMES); 
+printf("elapsed time = %f seconds \n%e GigaFLOPS achieved\n", diff, gflops);
 
 
 
